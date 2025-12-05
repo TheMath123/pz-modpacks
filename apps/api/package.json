@@ -1,0 +1,25 @@
+{
+  "name": "api",
+  "version": "1.0.50",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --compile --outfile=api",
+    "build:alpine": "bun run build --minify --sourcemap --target=bun-linux-x64-musl",
+    "preview": "./api",
+    "type:check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "1.4.0",
+    "@elysiajs/openapi": "1.4.11",
+    "@org/auth": "workspace:*",
+    "@org/cache": "workspace:*",
+    "@org/database": "workspace:*",
+    "@org/validation": "workspace:*",
+    "elysia": "latest"
+  },
+  "devDependencies": {
+    "@org/tsconfig": "workspace:*",
+    "@types/bun": "catalog:",
+    "bun-types": "latest"
+  }
+}

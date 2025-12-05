@@ -1,0 +1,102 @@
+name: CI/CD
+
+on:
+  release:
+    types: [published] # Runs only when a release is published
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            web:
+              - 'apps/web/**'
+            api:
+              - 'apps/api/**'
+
+      # =============== DEPLOY WEB (Vercel) ===============
+      - name: Deploy Web to Vercel
+        if: steps.changes.outputs.web == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          cd apps/web
+          bunx vercel link --yes --project zomboid-web --token=$VERCEL_TOKEN
+          bunx vercel build --prod --yes --token=$VERCEL_TOKEN
+          bunx vercel deploy --prod --prebuilt --token=$VERCEL_TOKEN
+
+      # =============== DEPLOY API (Fly.io + Docker + --compile) ===============
+      - name: Deploy API to Fly.io
+        if: steps.changes.outputs.api == 'true'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          cd apps/api
+          bun run build:alpine
+          curl -L https://fly.io/install.sh | sh
+          export PATH="$HOME/.fly/bin:$PATH"
+
+          # Create app if it doesn't exist
+          if ! fly apps list -t "$FLY_API_TOKEN" | grep -q "zomboid-api"; then
+            fly apps create zomboid-api --org personal -t "$FLY_API_TOKEN"
+          fi
+
+          # Deploy
+          fly deploy -t "$FLY_API_TOKEN"
+
+          # Health check with retries
+          for i in {1..6}; do
+            sleep 10
+            if curl -f https://zomboid-api.fly.dev/health; then
+              echo "API is healthy!"
+              exit 0
+            fi
+            echo "Attempt $i/6..."
+          done
+
+          echo "Deployment failed after 6 attempts!"
+          exit 1
+
+      # =============== AUTOMATIC ROLLBACK ===============
+      - name: Rollback API on Failure
+        if: failure() && steps.changes.outputs.api == 'true'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          cd apps/api
+          curl -L https://fly.io/install.sh | sh
+          export PATH="$HOME/.fly/bin:$PATH"
+
+          # Get previous successful release image
+          PREV_VERSION=$(fly releases --app zomboid-api --json -t "$FLY_API_TOKEN" | jq -r '.[1].ImageRef // empty')
+
+          if [ -z "$PREV_VERSION" ]; then
+            echo "No previous version found!"
+            exit 1
+          fi
+
+          echo "Rolling back to version: $PREV_VERSION"
+          fly deploy \
+            --image "$PREV_VERSION" \
+            --strategy immediate \
+            -t "$FLY_API_TOKEN"
+
+          sleep 10
+          curl -f https://zomboid-api.fly.dev/health || exit 1

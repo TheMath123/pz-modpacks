@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".vite/dist/**", "api.exe"]
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "lint": { "outputs": [] },
+    "type:check": { "outputs": [] },
+    "docker:down": { "outputs": [], "cache": false }
+  }
+}
