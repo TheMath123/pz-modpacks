@@ -22,6 +22,13 @@
       "when": 1764968088483,
       "tag": "0002_sticky_raider",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1764984810563,
+      "tag": "0003_daffy_doorman",
+      "breakpoints": true
     }
   ]
 }
