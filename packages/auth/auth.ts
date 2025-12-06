@@ -19,7 +19,9 @@ export const auth = betterAuth({
   },
 
   session: { cookieCache: { enabled: true, maxAge: 60 * 5 } },
-
+  emailAndPassword: {
+    enabled: true,
+  },
   socialProviders: {
     discord: {
       clientId: env.DISCORD_CLIENT_ID,
