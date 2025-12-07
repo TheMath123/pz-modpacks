@@ -1,10 +1,11 @@
 import { z } from '@org/validation/zod'
 
-export const createModpackSchema = z.object({
+export const updateModpackSchema = z.object({
   name: z
-    .string({ error: 'Name is required' })
+    .string({ error: 'Name must be a string' })
     .min(3, { error: 'Name must be at least 3 characters long' })
-    .max(50, { error: 'Name must be at most 50 characters long' }),
+    .max(50, { error: 'Name must be at most 50 characters long' })
+    .optional(),
   description: z
     .string({ error: 'Description must be a string' })
     .max(500, { error: 'Description must be at most 500 characters long' })
@@ -12,8 +13,7 @@ export const createModpackSchema = z.object({
   avatarUrl: z.url({ error: 'Invalid URL format for avatar' }).optional(),
   isPublic: z
     .boolean({ error: 'Invalid boolean value for isPublic' })
-    .optional()
-    .default(false),
+    .optional(),
   steamWorkshopUrl: z
     .url({
       hostname: /^steamcommunity\.com$/,
@@ -22,4 +22,4 @@ export const createModpackSchema = z.object({
     .optional(),
 })
 
-export type CreateModpackSchema = z.infer<typeof createModpackSchema>
+export type UpdateModpackSchema = z.infer<typeof updateModpackSchema>
