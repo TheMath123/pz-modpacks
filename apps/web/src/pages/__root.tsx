@@ -1,6 +1,7 @@
 import { createRootRoute, HeadContent, Outlet } from '@tanstack/react-router'
 import * as React from 'react'
-import { SiteHeader } from '@/components/site-header'
+import { AppHeader } from '@/components/header'
+import { ReactQueryProvider } from '@/lib/react-query'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -10,10 +11,10 @@ function RootComponent() {
   return (
     <React.Fragment>
       <HeadContent />
-      <div>
-        <SiteHeader />
+      <ReactQueryProvider>
+        <AppHeader />
         <Outlet />
-      </div>
+      </ReactQueryProvider>
     </React.Fragment>
   )
 }
