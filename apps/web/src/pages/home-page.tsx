@@ -1,20 +1,16 @@
-import { Card } from '@org/design-system/components/ui/card'
+import { PublicModpacks } from './components/public-modpacks'
 
 export function HomePage() {
   return (
-    <div>
-      <main>
-        <h1>Wellcome to PZ Modpacks!</h1>
-        <h2>Your gateway to the best Project Zomboid modpacks.</h2>
+    <main className="container flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-2xl font-bold">Wellcome to PZ Modpacks!</h1>
+        <h2 className="text-lg font-medium ">
+          Your gateway to the best Project Zomboid modpacks.
+        </h2>
+      </div>
 
-        <div>
-          {Array.from({ length: 5 }, (_, i) => (
-            <Card key={i}>
-              <p>Explore the features and mods included in Modpack {i + 1}.</p>
-            </Card>
-          ))}
-        </div>
-      </main>
-    </div>
+      <PublicModpacks />
+    </main>
   )
 }
