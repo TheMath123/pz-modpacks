@@ -1,6 +1,13 @@
 {
   "name": "@org/validation",
   "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./zod": "./zod.ts",
+    "./modpack": "./modpack.ts"
+  },
   "dependencies": {
     "zod": "4.1.12"
   }
