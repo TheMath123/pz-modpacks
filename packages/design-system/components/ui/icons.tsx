@@ -2,13 +2,14 @@ import type { IconProps } from '@phosphor-icons/react'
 
 export {
   ArrowRightIcon,
+  CaretUpDownIcon,
+  DiscordLogoIcon,
   GearIcon,
   MoonIcon,
   SignOutIcon,
   StarIcon,
   SteamLogoIcon,
   SunIcon,
-  CaretUpDownIcon
 } from '@phosphor-icons/react'
 
 export const Theme = (props: IconProps) => (
