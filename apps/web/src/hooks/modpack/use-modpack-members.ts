@@ -16,7 +16,7 @@ export function useModpackMembers(
     queryFn: async () => {
       const response = await ModpackService.getMembers(modpackId)
       if (!response.success) {
-        throw new Error(response.error || 'Failed to fetch members')
+        throw new Error(response.error.message || 'Failed to fetch members')
       }
       return response.data
     },

@@ -12,7 +12,8 @@ export function useModpackById(
     queryKey: modpackKeys.detail(id),
     queryFn: async () => {
       const result = await ModpackService.getById(id)
-      if (!result.success) throw new Error(result.error)
+      if (!result.success)
+        throw new Error(result.error.message || 'Failed to fetch modpack')
       return result.data
     },
     staleTime: 1000 * 60 * 5,

@@ -38,6 +38,7 @@ export function RemoveMemberDialog({
     })
 
     if (!result.success) {
+      console.log(result)
       toast.error(
         result.error.message ||
           'Failed to remove member. Please try again later.',
