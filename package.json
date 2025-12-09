@@ -10,7 +10,7 @@
   "packageManager": "bun@1.3.3",
   "private": true,
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo watch dev",
     "build": "turbo run build",
     "preview": "turbo run preview",
     "type:check": "turbo type:check",
