@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from '@org/design-system/components/ui/dialog'
 import { PencilIcon } from '@org/design-system/components/ui/icons'
-import type { UpdateModpackFormData } from '@org/validation/forms/modapack'
+import type { UpdateModpackFormData } from '@org/validation/forms/modpack'
 import { useState } from 'react'
 import { useUpdateModpack } from '@/hooks/modpack'
 import type { ModpackWithMembers } from '@/services/modpack/get-modpack-details.service'

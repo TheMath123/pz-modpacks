@@ -2,7 +2,7 @@ import { useAppForm } from '@org/design-system/components/ui/form-tanstack'
 import {
   type CreateModpackFormData,
   createModpackFormSchema,
-} from '@org/validation/forms/modapack'
+} from '@org/validation/forms/modpack'
 import { SubmitButton } from '@/components/form/submit-button'
 import { TextField } from '@/components/form/text-field'
 

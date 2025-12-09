@@ -9,7 +9,7 @@ import {
 } from '@org/design-system/components/ui/dialog'
 import { PlusIcon } from '@org/design-system/components/ui/icons'
 import { toast } from '@org/design-system/components/ui/sonner'
-import type { CreateModpackFormData } from '@org/validation/forms/modapack'
+import type { CreateModpackFormData } from '@org/validation/forms/modpack'
 import { useState } from 'react'
 import { useCreateModpack } from '@/hooks/modpack'
 import { ModpackForm } from './modpack-form'
