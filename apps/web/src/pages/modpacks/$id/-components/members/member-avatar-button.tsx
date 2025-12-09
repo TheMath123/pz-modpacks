@@ -36,7 +36,7 @@ export function MemberAvatarButton({
           <XIcon className="text-destructive size-4" weight="bold" />
         </div>
       )}
-      <Avatar className="h-10 w-10 hover:z-10 transition-all border-2 border-border shadow-sm">
+      <Avatar className="h-10 w-10 hover:z-10 transition-all border-2 border-border">
         <AvatarImage src={member.user.image || undefined} />
         <AvatarFallback className="size-full rounded-none">
           {getInitials(member.user.name || member.user.email)}

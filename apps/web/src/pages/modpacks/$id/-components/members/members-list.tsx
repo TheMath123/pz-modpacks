@@ -3,6 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@org/design-system/components/ui/avatar'
+import { Button } from '@org/design-system/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,11 +11,12 @@ import {
   DropdownMenuPositioner,
   DropdownMenuTrigger,
 } from '@org/design-system/components/ui/dropdown-menu'
-import { CircleNotchIcon } from '@org/design-system/components/ui/icons'
+import { CircleNotchIcon, XIcon } from '@org/design-system/components/ui/icons'
 import { useModpackMembers } from '@/hooks/members'
 import { getInitials } from '@/utils/string'
 import { AddMemberButton } from './add-member-button'
 import { AddMemberDialog } from './add-member-dialog'
+import { MemberAvatarButton } from './member-avatar-button'
 import { RemoveMemberDialog } from './remove-member-dialog'
 
 interface MembersListProps {
@@ -57,13 +59,14 @@ export function MembersList({
   const remainingCount = members.length - 5
 
   return (
-    <div className="flex flex-row -space-x-2 items-center">
+    <div className="flex flex-row items-center -space-x-2">
       {visibleMembers.map((member) => (
         <RemoveMemberDialog
           key={member.id}
           member={member}
           modpackId={modpackId}
           canRemove={canManageMembers}
+          trigger={(props) => <MemberAvatarButton member={member} {...props} />}
         />
       ))}
 
@@ -73,7 +76,7 @@ export function MembersList({
             render={
               <button
                 type="button"
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-border shadow bg-muted hover:bg-muted-foreground transition-colors cursor-pointer"
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-border bg-background hover:bg-muted-foreground transition-colors cursor-pointer"
               >
                 <span className="text-xs font-medium">+{remainingCount}</span>
               </button>
@@ -89,22 +92,32 @@ export function MembersList({
                   key={member.id}
                   className="flex items-center gap-3 p-2"
                 >
-                  <RemoveMemberDialog
-                    disabledTooltip={true}
-                    modpackId={modpackId}
+                  <MemberAvatarButton
                     member={member}
-                    canRemove={canManageMembers}
+                    disabledTooltip
+                    readOnly
                   />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">
                       {member.user.name || member.user.email}
                     </p>
                     {member.user.name && (
-                      <p className="text-xs text-muted-foreground truncate">
-                        {member.user.email}
-                      </p>
+                      <p className="text-xs truncate">{member.user.email}</p>
                     )}
                   </div>
+                  <RemoveMemberDialog
+                    modpackId={modpackId}
+                    member={member}
+                    canRemove={canManageMembers}
+                    trigger={(props) => (
+                      <Button variant="outline" size="icon" {...props}>
+                        <XIcon
+                          className="text-destructive size-4"
+                          weight="bold"
+                        />
+                      </Button>
+                    )}
+                  />
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

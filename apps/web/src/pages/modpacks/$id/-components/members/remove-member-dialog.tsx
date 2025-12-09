@@ -19,16 +19,16 @@ interface RemoveMemberDialogProps {
   modpackId: string
   member: ModpackMemberWithUser
   canRemove?: boolean
-  disabledTooltip?: boolean
   onSuccess?: () => void
+  trigger: (props: React.ComponentProps<'button'>) => React.ReactElement
 }
 
 export function RemoveMemberDialog({
   modpackId,
   member,
   canRemove = false,
-  disabledTooltip,
   onSuccess,
+  trigger,
 }: RemoveMemberDialogProps) {
   const [open, setOpen] = useState(false)
   const removeMember = useRemoveModpackMember()
@@ -40,7 +40,6 @@ export function RemoveMemberDialog({
     })
 
     if (!result.success) {
-      console.log(result)
       toast.error(
         result.error.message ||
           'Failed to remove member. Please try again later.',
@@ -59,15 +58,7 @@ export function RemoveMemberDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger
-        render={(props) => (
-          <MemberAvatarButton
-            disabledTooltip={disabledTooltip}
-            member={member}
-            {...props}
-          />
-        )}
-      />
+      <AlertDialogTrigger render={(props) => trigger(props)} />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Remove Member</AlertDialogTitle>

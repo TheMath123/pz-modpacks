@@ -12,8 +12,6 @@ export function ModpackDetailsPage() {
   const { data: modpack, isLoading, error } = useModpackDetails(id)
   const canManage = useCanManageModpack(modpack?.owner || '')
 
-  console.log('error', error)
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-8">

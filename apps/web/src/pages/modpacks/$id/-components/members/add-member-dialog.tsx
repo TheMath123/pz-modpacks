@@ -28,7 +28,6 @@ export function AddMemberDialog({ modpackId, trigger }: AddMemberDialogProps) {
     })
 
     if (!result.success) {
-      console.log(result.error.message)
       toast.error(
         result.error.message || 'Failed to add member. Please try again later.',
       )
