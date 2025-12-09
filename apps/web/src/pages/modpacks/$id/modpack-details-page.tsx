@@ -7,56 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@org/design-system/components/ui/card'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@org/design-system/components/ui/dialog'
-import {
-  TrashIcon,
-  UserCirclePlusIcon,
-} from '@org/design-system/components/ui/icons'
-import type { AddMemberFormData } from '@org/validation/forms/modapack'
 import { useNavigate, useParams } from '@tanstack/react-router'
-import { useState } from 'react'
-import {
-  useAddModpackMember,
-  useModpackDetails,
-  useRemoveModpackMember,
-} from '@/hooks/modpack'
-import { AddMemberForm } from '@/pages/modpacks/$id/components/add-member-form'
+import { useModpackDetails } from '@/hooks/modpack'
+import { ModpackMembers } from './components/modpack-members'
 import { UpdateModpackForm } from './components/update-modpack-form'
 
 export function ModpackDetailsPage() {
   const { id } = useParams({ strict: false }) as { id: string }
   const navigate = useNavigate()
   const { data: modpack, isLoading, error } = useModpackDetails(id)
-
-  const [addMemberDialogOpen, setAddMemberDialogOpen] = useState(false)
-
-  const addMember = useAddModpackMember()
-  const removeMember = useRemoveModpackMember()
-
-  const handleAddMember = async (data: AddMemberFormData) => {
-    const result = await addMember.mutateAsync({
-      modpackId: id,
-      email: data.email,
-    })
-
-    if (result.success) {
-      setAddMemberDialogOpen(false)
-    }
-  }
-
-  const handleRemoveMember = async (memberId: string) => {
-    await removeMember.mutateAsync({
-      modpackId: id,
-      memberId,
-    })
-  }
 
   if (isLoading) {
     return (
@@ -145,6 +104,7 @@ export function ModpackDetailsPage() {
             <CardDescription>Mods included in this modpack</CardDescription>
           </CardHeader>
           <CardContent>
+            {/* adicionar o retorno dos mods */}
             {modpack.mods && modpack.mods.length > 0 ? (
               <ul className="space-y-2">
                 {modpack.mods.map((mod, index) => (
@@ -158,68 +118,8 @@ export function ModpackDetailsPage() {
             )}
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Members</CardTitle>
-              <CardDescription>
-                People who have access to this modpack
-              </CardDescription>
-            </div>
-            <Dialog
-              open={addMemberDialogOpen}
-              onOpenChange={setAddMemberDialogOpen}
-            >
-              <DialogTrigger>
-                <Button size="sm" variant="outline">
-                  <UserCirclePlusIcon className="h-4 w-4" weight="bold" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add Member</DialogTitle>
-                  <DialogDescription>
-                    Invite someone to collaborate on this modpack
-                  </DialogDescription>
-                </DialogHeader>
-                <AddMemberForm
-                  onSubmit={handleAddMember}
-                  isLoading={addMember.isPending}
-                />
-              </DialogContent>
-            </Dialog>
-          </CardHeader>
-          <CardContent>
-            {modpack.members && modpack.members.length > 0 ? (
-              <ul className="space-y-2">
-                {modpack.members.map((member) => (
-                  <li
-                    key={member.id}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <span>{member.userId}</span>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => handleRemoveMember(member.id)}
-                      disabled={removeMember.isPending}
-                    >
-                      <TrashIcon
-                        className="h-4 w-4 text-destructive"
-                        weight="bold"
-                      />
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No members yet. You can add collaborators to help manage this
-                modpack.
-              </p>
-            )}
-          </CardContent>
-        </Card>
+
+        <ModpackMembers modpackId={id} />
       </div>
     </div>
   )
