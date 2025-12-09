@@ -1,19 +1,13 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@org/design-system/components/ui/avatar'
 import { Button } from '@org/design-system/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuPositioner,
-  DropdownMenuTrigger,
-} from '@org/design-system/components/ui/dropdown-menu'
+
 import { CircleNotchIcon, XIcon } from '@org/design-system/components/ui/icons'
+import {
+  Popover,
+  PopoverContent,
+  PopoverPositioner,
+  PopoverTrigger,
+} from '@org/design-system/components/ui/popover'
 import { useModpackMembers } from '@/hooks/members'
-import { getInitials } from '@/utils/string'
 import { AddMemberButton } from './add-member-button'
 import { AddMemberDialog } from './add-member-dialog'
 import { MemberAvatarButton } from './member-avatar-button'
@@ -71,8 +65,8 @@ export function MembersList({
       ))}
 
       {remainingCount > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger
+        <Popover>
+          <PopoverTrigger
             render={
               <button
                 type="button"
@@ -82,16 +76,13 @@ export function MembersList({
               </button>
             }
           />
-          <DropdownMenuPositioner align="end">
-            <DropdownMenuContent className="w-64">
+          <PopoverPositioner className="w-48" align="end">
+            <PopoverContent>
               <div className="px-2 py-1.5 text-sm font-semibold">
                 All Members ({members.length})
               </div>
               {members.slice(5).map((member) => (
-                <DropdownMenuItem
-                  key={member.id}
-                  className="flex items-center gap-3 p-2"
-                >
+                <div key={member.id} className="flex items-center gap-3 p-2">
                   <MemberAvatarButton
                     member={member}
                     disabledTooltip
@@ -118,11 +109,11 @@ export function MembersList({
                       </Button>
                     )}
                   />
-                </DropdownMenuItem>
+                </div>
               ))}
-            </DropdownMenuContent>
-          </DropdownMenuPositioner>
-        </DropdownMenu>
+            </PopoverContent>
+          </PopoverPositioner>
+        </Popover>
       )}
       {canManageMembers && (
         <AddMemberDialog
