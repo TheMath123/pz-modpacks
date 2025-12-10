@@ -5,7 +5,7 @@ import { env } from '@/env'
 export const corsPlugin = new Elysia().use(
   cors({
     origin: env.ORIGIN_ALLOWED,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
