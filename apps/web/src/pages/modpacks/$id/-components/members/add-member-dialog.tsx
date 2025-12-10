@@ -15,9 +15,14 @@ import { AddMemberForm } from './add-member-form'
 interface AddMemberDialogProps {
   modpackId: string
   trigger: (props: React.ComponentProps<'button'>) => React.ReactElement
+  className?: string
 }
 
-export function AddMemberDialog({ modpackId, trigger }: AddMemberDialogProps) {
+export function AddMemberDialog({
+  modpackId,
+  trigger,
+  className,
+}: AddMemberDialogProps) {
   const [open, setOpen] = useState(false)
   const addMember = useAddModpackMember()
 

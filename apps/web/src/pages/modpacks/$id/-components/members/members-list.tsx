@@ -12,6 +12,7 @@ import { AddMemberButton } from './add-member-button'
 import { AddMemberDialog } from './add-member-dialog'
 import { MemberAvatarButton } from './member-avatar-button'
 import { RemoveMemberDialog } from './remove-member-dialog'
+import { ShowRemainingMember } from './show-remaining-member'
 
 interface MembersListProps {
   modpackId: string
@@ -67,14 +68,9 @@ export function MembersList({
       {remainingCount > 0 && (
         <Popover>
           <PopoverTrigger
-            render={
-              <button
-                type="button"
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-border bg-background hover:bg-muted-foreground transition-colors cursor-pointer"
-              >
-                <span className="text-xs font-medium">+{remainingCount}</span>
-              </button>
-            }
+            render={(props) => (
+              <ShowRemainingMember remainingCount={remainingCount} {...props} />
+            )}
           />
           <PopoverPositioner className="w-48" align="end">
             <PopoverContent>
@@ -101,7 +97,12 @@ export function MembersList({
                     member={member}
                     canRemove={canManageMembers}
                     trigger={(props) => (
-                      <Button variant="outline" size="icon" {...props}>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-destructive/10"
+                        {...props}
+                      >
                         <XIcon
                           className="text-destructive size-4"
                           weight="bold"
@@ -118,7 +119,9 @@ export function MembersList({
       {canManageMembers && (
         <AddMemberDialog
           modpackId={modpackId}
-          trigger={(props) => <AddMemberButton {...props} />}
+          trigger={(props) => (
+            <AddMemberButton className="-translate-x-2" {...props} />
+          )}
         />
       )}
     </div>

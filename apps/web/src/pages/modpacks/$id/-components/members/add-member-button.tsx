@@ -9,16 +9,13 @@ export function AddMemberButton({
     <button
       type="button"
       className={cn(
-        'group relative inline-flex h-10 w-10 items-center justify-center rounded-md border-2 border-dashed border-border ml-2 cursor-pointer hover:border-2 hover:border-border hover:border-solid active:scale-95 hover:shadow transition-all',
+        'group relative inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-border ml-2 cursor-pointer hover:border-2 hover:border-border hover:bg-accent active:scale-95 transition-all bg-background hover:shadow-xs',
         className,
       )}
       title="Add member"
       {...props}
     >
-      <UserPlusIcon
-        className="h-4 w-4 text-muted-foreground group-hover:text-white"
-        weight="bold"
-      />
+      <UserPlusIcon className="h-4 w-4 text-border " weight="bold" />
     </button>
   )
 }
