@@ -12,7 +12,7 @@ export function AppHeader() {
 
   return (
     <header className="py-2 border-b-2">
-      <div className="container flex justify-between items-center">
+      <div className="container flex justify-between items-center gap-2">
         <Link
           to="/"
           className="hover:scale-95 active:scale-110 transition-all duration-200 ease-in-out flex flex-row gap-2 items-center"
@@ -26,9 +26,9 @@ export function AppHeader() {
             alt="PZ Packs"
             className="h-16"
           />
-          <h1 className="font-bold text-2xl">PZ Packs</h1>
+          <h1 className="font-bold text-2xl hidden md:block">PZ Packs</h1>
         </Link>
-        <div className="flex flex-row gap-3 items-center">
+        <div className="flex flex-row gap-2 items-center flex-wrap">
           <Anchor href="/" className={cn(pathname === '/' && 'underline ')}>
             Home
           </Anchor>

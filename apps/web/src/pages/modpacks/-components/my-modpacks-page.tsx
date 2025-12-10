@@ -76,7 +76,7 @@ export function MyModpacksPage() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container flex flex-col gap-8 p-4 md:p-8">
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-4xl font-bold mb-2">My Modpacks</h1>
