@@ -15,6 +15,10 @@ export async function updateModpackService(
     body: JSON.stringify(data),
   })
 
-  if (res.status !== 200) return failure(res)
-  return success<DModpack>(res)
+  if (res.status !== 200) {
+    const { error } = await res.json()
+    throw new Error(error.message ?? 'We have a problem updating this modpack')
+  }
+
+  return (await res.json()) as DModpack
 }
