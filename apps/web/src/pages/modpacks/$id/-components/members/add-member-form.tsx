@@ -1,5 +1,6 @@
 import { useAppForm } from '@org/design-system/components/ui/form-tanstack'
 import { addMemberFormSchema } from '@org/validation/forms/modpack'
+import { useEffect } from 'react'
 import { SubmitButton, TextField } from '@/components/form'
 import { useAddModpackMember } from '@/hooks'
 
@@ -24,7 +25,12 @@ export function AddMemberForm({ onSuccess, modpackId }: AddMemberFormProps) {
       }),
   })
 
-  addMember.isSuccess && onSuccess()
+  useEffect(() => {
+    if (addMember.isSuccess) {
+      form.reset()
+      onSuccess()
+    }
+  }, [addMember.isSuccess])
 
   return (
     <form
