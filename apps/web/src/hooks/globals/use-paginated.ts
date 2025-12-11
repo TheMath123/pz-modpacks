@@ -24,20 +24,11 @@ export function usePaginated<T>({
   return useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await queryFn(queryParams)
-      // TODO: Arrumar essa resposta
-      if (!result.success) {
-        return {
-          data: [],
-          pagination: {
-            page: 1,
-            limit: 10,
-            total: 0,
-            totalPages: 0,
-          },
-        } as PaginatedResponse<T>
+      const response = await queryFn(queryParams)
+      if ('data' in response) {
+        return response
       }
-      return result.data as PaginatedResponse<T>
+      throw response
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     ...options,
