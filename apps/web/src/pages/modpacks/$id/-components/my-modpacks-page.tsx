@@ -1,9 +1,9 @@
-import { Badge } from '@org/design-system/components/ui/badge'
 import { Button } from '@org/design-system/components/ui/button'
 import { SteamLogoIcon } from '@org/design-system/components/ui/icons'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { ModpackVisibilityBadge } from '@/components/modpack/index.ts'
 import { useCanManageModpack, useModpack } from '@/hooks'
+import { ArchiveModpackDialog } from './archive-mobdpack-dialog.tsx'
 import { Members } from './members/members.tsx'
 import { UpdateModpackDialog } from './update-modpack-dialog.tsx'
 
@@ -89,8 +89,9 @@ export function MyModpacksPages() {
             )}
             <Members modpackId={modpack.id} canManageMembers={canManage} />
           </div>
-          <div className="flex flex-col gap-4 items-end">
+          <div className="flex flex-row gap-4 items-end">
             <UpdateModpackDialog modpack={modpack} />
+            <ArchiveModpackDialog modpack={modpack} />
           </div>
         </div>
 

@@ -52,7 +52,7 @@ export function RemoveMemberDialog({
             <span className="font-semibold">
               {member.user.name || member.user.email}
             </span>{' '}
-            from this modpack? This action cannot be undone.
+            from this modpack?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
