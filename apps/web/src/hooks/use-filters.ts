@@ -11,19 +11,19 @@ export interface PaginationFilters {
 
 export function useFilters<T extends PaginationFilters>() {
   const navigate = useNavigate()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: problem with tanstack types
   const filters = useSearch({ strict: false } as any) as T
 
   const setFilters = useCallback(
     (newFilters: Partial<T>) => {
       navigate({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        search: (prev: any) => ({
+        // biome-ignore lint/suspicious/noExplicitAny: problem with tanstack types
+        search: ((prev: any) => ({
           ...prev,
           ...newFilters,
-        }),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any)
+          // biome-ignore lint/suspicious/noExplicitAny: problem with tanstack types
+        })) as any,
+      })
     },
     [navigate],
   )
