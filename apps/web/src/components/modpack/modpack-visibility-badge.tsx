@@ -9,7 +9,7 @@ export function ModpackVisibilityBadge({
 }) {
   if (isPublic)
     return (
-      <Badge variant="solid" size="sm" className={className}>
+      <Badge variant="outline" size="sm" className={className}>
         Public
       </Badge>
     )
