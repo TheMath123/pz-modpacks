@@ -1,7 +1,9 @@
 import { Button } from '@org/design-system/components/ui/button'
+import { ButtonGroup } from '@org/design-system/components/ui/button-group.tsx'
 import { SteamLogoIcon } from '@org/design-system/components/ui/icons'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { ModpackVisibilityBadge } from '@/components/modpack/index.ts'
+import { ModpackVerifiedBadge } from '@/components/modpack/modpack-verified-badge.tsx'
 import { useCanManageModpack, useModpack } from '@/hooks'
 import { ArchiveModpackDialog } from './archive-mobdpack-dialog.tsx'
 import { Members } from './members/members.tsx'
@@ -60,11 +62,24 @@ export function MyModpacksPages() {
           <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">
               <h1 className="text-2xl font-bold">{modpack.name}</h1>
+              {modpack.isVerified && <ModpackVerifiedBadge />}
               <ModpackVisibilityBadge isPublic={modpack.isPublic} />
+            </div>
+            {modpack.description && (
+              <p className="text-muted-foreground text-sm max-w-2xl">
+                {modpack.description}
+              </p>
+            )}
+
+            <Members modpackId={modpack.id} canManageMembers={canManage} />
+          </div>
+          <ButtonGroup className="h-11">
+            <ButtonGroup>
               {modpack.steamUrl && (
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="icon"
+                  className="w-fit bg-[#1b2838] "
                   aria-label="Visit modpack in steam workshop"
                   render={
                     <Link
@@ -74,33 +89,21 @@ export function MyModpacksPages() {
                       className="text-sm text-primary hover:underline"
                     >
                       <SteamLogoIcon
-                        className="w-6 h-6 text-foreground"
+                        className="w-6 h-6 text-white"
                         weight="bold"
                       />
                     </Link>
                   }
                 />
               )}
-            </div>
-            {modpack.description && (
-              <p className="text-muted-foreground text-sm max-w-2xl">
-                {modpack.description}
-              </p>
-            )}
-            <Members modpackId={modpack.id} canManageMembers={canManage} />
-          </div>
-          <div className="flex flex-row gap-4 items-end">
-            <UpdateModpackDialog modpack={modpack} />
-            <ArchiveModpackDialog modpack={modpack} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex items-center space-x-2"></div>
+            </ButtonGroup>
+            <ButtonGroup>
+              <UpdateModpackDialog modpack={modpack} />
+              <ArchiveModpackDialog modpack={modpack} />
+            </ButtonGroup>
+          </ButtonGroup>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
   )
 }

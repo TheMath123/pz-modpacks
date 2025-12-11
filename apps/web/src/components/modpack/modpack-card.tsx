@@ -1,6 +1,7 @@
 import { Button } from '@org/design-system/components/ui/button'
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -33,12 +34,6 @@ export function ModpackCard({ data }: ModpackCardProps) {
       }
     >
       <div className="relative bg-primary/30 dark:bg-primary min-w-40 h-full min-h-48 flex items-center justify-center rounded-l-lg text-muted-foreground/20 text-4xl">
-        {pathname !== '/' && (
-          <ModpackVisibilityBadge
-            isPublic={data.isPublic}
-            className="absolute top-2 left-2"
-          />
-        )}
         {data.avatarUrl ? (
           <img
             src={data.avatarUrl}
@@ -59,28 +54,29 @@ export function ModpackCard({ data }: ModpackCardProps) {
           />
         )}
       </div>
-      <div className="flex flex-col gap-2 w-full justify-between p-4">
-        <CardHeader className="flex flex-col items-start gap-4 px-0">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              {data.name}
-            </CardTitle>
+      <div className="grid grid-rows-[1fr_2rem] w-full pt-4 px-4 pb-1">
+        <CardHeader className="flex flex-col items-start gap-2 px-0">
+          <div className="flex flex-row items-center gap-2">
+            <CardTitle>{data.name}</CardTitle>
             {data.isVerified && <ModpackVerifiedBadge />}
           </div>
-          <CardDescription className="line-clamp-2">
-            {data.description}
-          </CardDescription>
-        </CardHeader>
-
-        <CardFooter className="px-0 justify-between">
-          {data.steamUrl && (
+          {data.description && (
+            <CardDescription className="line-clamp-2">
+              {data.description}
+            </CardDescription>
+          )}
+          {/* {data.steamUrl && (
             <Link to={data.steamUrl} target="_blank" className="z-10">
               <Button size="icon" variant="ghost">
                 <SteamLogoIcon className="w-6 h-6" weight="bold" />
               </Button>
             </Link>
+          )} */}
+        </CardHeader>
+        <CardFooter className="px-0 justify-between ">
+          {pathname !== '/' && (
+            <ModpackVisibilityBadge isPublic={data.isPublic} className="" />
           )}
-
           <span className="text-sm font-medium only:ml-auto">
             {data.mods?.length ?? 0} mods
           </span>

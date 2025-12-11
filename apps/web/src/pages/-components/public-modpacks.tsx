@@ -1,3 +1,4 @@
+import { ErrorCard } from '@/components/error-card'
 import { ModpackFilters } from '@/components/modpack/filters/modpack-filters'
 import { ModpackGrid } from '@/components/modpack/modpack-grid'
 import { PaginationControls } from '@/components/pagination'
@@ -11,13 +12,7 @@ export function PublicModpacks() {
   const { data, isLoading, error } = useListPublicModpacks(filters)
 
   if (error) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-destructive">
-          Error loading modpacks: {error.message}
-        </p>
-      </div>
-    )
+    return <ErrorCard message={error.message} />
   }
 
   return (

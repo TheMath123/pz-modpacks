@@ -39,8 +39,9 @@ export function ArchiveModpackDialog({ modpack }: ArchiveModpackDialogProps) {
         render={(props) => (
           <Button
             variant="default"
-            className="aspect-square bg-destructive hover:bg-red-800"
-            size="sm"
+            aria-label="Archive Modpack"
+            title="Archive Modpack"
+            className="aspect-square bg-destructive hover:bg-red-800 p-0 items-center justify-center"
             {...props}
           >
             <TrashIcon className="w-4 h-4" weight="bold" />

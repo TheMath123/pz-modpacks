@@ -1,3 +1,4 @@
+import { ErrorCard } from '@/components/error-card'
 import { ModpackFilters } from '@/components/modpack/filters/modpack-filters'
 import { ModpackGrid } from '@/components/modpack/modpack-grid'
 import { PaginationControls } from '@/components/pagination'
@@ -11,16 +12,6 @@ export function MyModpacksPage() {
 
   const { data, isLoading, error } = useListMyModpacks(filters)
 
-  if (error) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-destructive font-medium">
-          Error loading modpacks: {error.message}
-        </p>
-      </div>
-    )
-  }
-
   return (
     <div className="container flex flex-col gap-8 p-4 md:p-8">
       <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
@@ -33,30 +24,34 @@ export function MyModpacksPage() {
         <CreateModpackDialog />
       </div>
 
-      <div className="space-y-6">
-        <ModpackFilters
-          onSearchChange={handleSearchChange}
-          onSortChange={handleSortChange}
-          search={filters.search}
-          sortBy={filters.sortBy}
-          sortOrder={filters.sortOrder}
-        />
-
-        <ModpackGrid
-          modpacks={data?.data ?? []}
-          isLoading={isLoading}
-          emptyMessage="You don't have any modpacks yet. Create one to get started!"
-        />
-
-        {data && data.pagination.totalPages > 1 && (
-          <PaginationControls
-            currentPage={data.pagination.page}
-            totalPages={data.pagination.totalPages}
-            onPageChange={handlePageChange}
-            isLoading={isLoading}
+      {error ? (
+        <ErrorCard message={error.message} />
+      ) : (
+        <div className="space-y-6">
+          <ModpackFilters
+            onSearchChange={handleSearchChange}
+            onSortChange={handleSortChange}
+            search={filters.search}
+            sortBy={filters.sortBy}
+            sortOrder={filters.sortOrder}
           />
-        )}
-      </div>
+
+          <ModpackGrid
+            modpacks={data?.data ?? []}
+            isLoading={isLoading}
+            emptyMessage="You don't have any modpacks yet. Create one to get started!"
+          />
+
+          {data && data.pagination.totalPages > 1 && (
+            <PaginationControls
+              currentPage={data.pagination.page}
+              totalPages={data.pagination.totalPages}
+              onPageChange={handlePageChange}
+              isLoading={isLoading}
+            />
+          )}
+        </div>
+      )}
     </div>
   )
 }

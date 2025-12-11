@@ -8,6 +8,13 @@
       "when": 1765306893041,
       "tag": "0000_deep_rage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765493514214,
+      "tag": "0001_chubby_speedball",
+      "breakpoints": true
     }
   ]
 }

@@ -23,9 +23,12 @@ export function UpdateModpackDialog({ modpack }: UpdateModpackFormProps) {
     <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
       <DialogTrigger
         render={
-          <Button size="icon" className="w-fit h-fit">
-            <PencilIcon className="mr-2 h-4 w-4" weight="bold" />
-            Edit
+          <Button
+            aria-label="Edit Modpack"
+            title="Edit Modpack"
+            className="p-0 items-center justify-center aspect-square"
+          >
+            <PencilIcon className="h-4 w-4" weight="bold" />
           </Button>
         }
       />
