@@ -15,12 +15,18 @@ export function SearchFilter({
   const [search, setSearch] = useState(initialSearch)
 
   useEffect(() => {
+    setSearch(initialSearch)
+  }, [initialSearch])
+
+  useEffect(() => {
     const timer = setTimeout(() => {
-      onSearchChange(search)
+      if (search !== initialSearch) {
+        onSearchChange(search)
+      }
     }, debounceTime)
 
     return () => clearTimeout(timer)
-  }, [search, onSearchChange, debounceTime])
+  }, [search, debounceTime, onSearchChange, initialSearch])
 
   return (
     <div className="flex-1">

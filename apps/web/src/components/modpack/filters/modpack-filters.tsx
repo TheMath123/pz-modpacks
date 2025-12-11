@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { SearchFilter } from './search-filter'
 import { SortByFilter } from './sort-by-filter'
 import { SortOrderFilter } from './sort-order-filter'
@@ -18,17 +17,12 @@ export function ModpackFilters({
   initialSortBy = 'createdAt',
   initialSortOrder = 'desc',
 }: ModpackFiltersProps) {
-  const [sortBy, setSortBy] = useState(initialSortBy)
-  const [sortOrder, setSortOrder] = useState(initialSortOrder)
-
   const handleSortByChange = (newSortBy: string) => {
-    setSortBy(newSortBy)
-    onSortChange(newSortBy, sortOrder)
+    onSortChange(newSortBy, initialSortOrder)
   }
 
   const handleSortOrderChange = (newSortOrder: string) => {
-    setSortOrder(newSortOrder)
-    onSortChange(sortBy, newSortOrder)
+    onSortChange(initialSortBy, newSortOrder)
   }
 
   return (

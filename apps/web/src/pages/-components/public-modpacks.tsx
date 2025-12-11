@@ -1,67 +1,14 @@
-import { useNavigate, useSearch } from '@tanstack/react-router'
-import { useCallback } from 'react'
 import { ModpackFilters } from '@/components/modpack/filters/modpack-filters'
 import { ModpackGrid } from '@/components/modpack/modpack-grid'
 import { PaginationControls } from '@/components/pagination'
-import { useListPublicModpacks } from '@/hooks'
-
-interface PublicModpacksSearchParams {
-  page?: number
-  limit?: number
-  search?: string
-  sortBy?: 'createdAt' | 'updatedAt' | 'name'
-  sortOrder?: 'asc' | 'desc'
-}
+import { useFilters, useListPublicModpacks } from '@/hooks'
+import type { PublicModpacksFiltersSchema } from '..'
 
 export function PublicModpacks() {
-  const navigate = useNavigate()
-  const searchParams = useSearch({
-    strict: false,
-  }) as PublicModpacksSearchParams
-  // TODO: refatorar essa pora de paginação
-  const filters = {
-    page: String(searchParams.page ?? 1),
-    limit: String(searchParams.limit ?? 12),
-    search: searchParams.search,
-    sortBy: searchParams.sortBy ?? 'createdAt',
-    sortOrder: searchParams.sortOrder ?? 'desc',
-  }
+  const { filters, handleSearchChange, handleSortChange, handlePageChange } =
+    useFilters<PublicModpacksFiltersSchema>()
 
   const { data, isLoading, error } = useListPublicModpacks(filters)
-
-  const updateURL = useCallback(
-    (updates: Partial<PublicModpacksSearchParams>) => {
-      navigate({
-        search: (prev) => ({ ...prev, ...updates }),
-      })
-    },
-    [navigate],
-  )
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      updateURL({ page })
-    },
-    [updateURL],
-  )
-
-  const handleSearchChange = useCallback(
-    (search: string) => {
-      updateURL({ search: search || undefined, page: 1 })
-    },
-    [updateURL],
-  )
-
-  const handleSortChange = useCallback(
-    (sortBy: string, sortOrder: string) => {
-      updateURL({
-        sortBy: sortBy as PublicModpacksSearchParams['sortBy'],
-        sortOrder: sortOrder as PublicModpacksSearchParams['sortOrder'],
-        page: 1,
-      })
-    },
-    [updateURL],
-  )
 
   if (error) {
     return (

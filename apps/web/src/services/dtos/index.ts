@@ -1,6 +1,6 @@
 export interface PaginateQueryParams {
-  page?: string
-  limit?: string
+  page?: string | number
+  limit?: string | number
   search?: string
   sortBy?: string
   sortOrder?: string

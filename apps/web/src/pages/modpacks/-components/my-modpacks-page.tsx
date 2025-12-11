@@ -1,69 +1,15 @@
-import { useNavigate, useSearch } from '@tanstack/react-router'
-import { useCallback } from 'react'
 import { ModpackFilters } from '@/components/modpack/filters/modpack-filters'
 import { ModpackGrid } from '@/components/modpack/modpack-grid'
 import { PaginationControls } from '@/components/pagination'
-import { useListMyModpacks } from '@/hooks'
+import { useFilters, useListMyModpacks } from '@/hooks'
 import { CreateModpackDialog } from '@/pages/modpacks/-components/create-modpack-dialog'
-
-interface MyModpacksSearchParams {
-  page?: number
-  limit?: number
-  search?: string
-  sortBy?: 'createdAt' | 'updatedAt' | 'name'
-  sortOrder?: 'asc' | 'desc'
-}
+import type { ModpacksFiltersSchema } from '..'
 
 export function MyModpacksPage() {
-  const navigate = useNavigate()
-  const searchParams = useSearch({
-    strict: false,
-  }) as MyModpacksSearchParams
-
-  const filters = {
-    page: String(searchParams.page ?? 1),
-    limit: String(searchParams.limit ?? 12),
-    search: searchParams.search,
-    sortBy: searchParams.sortBy ?? 'createdAt',
-    sortOrder: searchParams.sortOrder ?? 'desc',
-  }
+  const { filters, handleSearchChange, handleSortChange, handlePageChange } =
+    useFilters<ModpacksFiltersSchema>()
 
   const { data, isLoading, error } = useListMyModpacks(filters)
-  // TODO: refatorar essa pora de paginação
-  const updateURL = useCallback(
-    (updates: Partial<MyModpacksSearchParams>) => {
-      navigate({
-        search: (prev: MyModpacksSearchParams) =>
-          ({ ...prev, ...updates }) as MyModpacksSearchParams,
-      })
-    },
-    [navigate],
-  )
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      updateURL({ page })
-    },
-    [updateURL],
-  )
-
-  const handleSearchChange = useCallback(
-    (search: string) => {
-      updateURL({ search: search || undefined, page: 1 })
-    },
-    [updateURL],
-  )
-
-  const handleSortChange = useCallback(
-    (sortBy: string, sortOrder: string) => {
-      updateURL({
-        sortBy: sortBy as MyModpacksSearchParams['sortBy'],
-        sortOrder: sortOrder as MyModpacksSearchParams['sortOrder'],
-        page: 1,
-      })
-    },
-    [updateURL],
-  )
 
   if (error) {
     return (
