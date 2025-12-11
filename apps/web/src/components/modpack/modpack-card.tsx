@@ -33,7 +33,7 @@ export function ModpackCard({ data }: ModpackCardProps) {
         })
       }
     >
-      <div className="relative bg-primary/30 dark:bg-primary min-w-40 h-full min-h-48 flex items-center justify-center rounded-l-lg text-muted-foreground/20 text-4xl">
+      <div className="relative bg-primary/30 dark:bg-primary aspect-square h-40 flex items-center justify-center rounded-l-lg text-muted-foreground/20 text-4xl overflow-clip">
         {data.avatarUrl ? (
           <img
             src={data.avatarUrl}
