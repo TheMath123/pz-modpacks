@@ -3,34 +3,31 @@ import {
   type CreateModpackFormData,
   createModpackFormSchema,
 } from '@org/validation/forms/modpack'
+import { useEffect } from 'react'
 import { SubmitButton } from '@/components/form/submit-button'
 import { TextField } from '@/components/form/text-field'
+import { useCreateModpack } from '@/hooks'
 
 interface CreateModpackFormProps {
-  defaultValues?: Partial<CreateModpackFormData>
-  onSubmit: (data: CreateModpackFormData) => void | Promise<void>
-  isLoading?: boolean
-  submitText?: string
+  onSuccess: () => void
 }
 
-export function CreateModpackForm({
-  defaultValues,
-  onSubmit,
-  isLoading = false,
-  submitText = 'Save',
-}: CreateModpackFormProps) {
+export function CreateModpackForm({ onSuccess }: CreateModpackFormProps) {
+  const createModpack = useCreateModpack()
   const form = useAppForm({
-    defaultValues: {
-      name: defaultValues?.name || '',
-      description: defaultValues?.description || undefined,
-      avatarUrl: defaultValues?.avatarUrl || undefined,
-      steamUrl: defaultValues?.steamUrl || undefined,
-    },
     validators: {
       onSubmit: createModpackFormSchema,
     },
-    onSubmit: ({ value }) => onSubmit(value),
+    onSubmit: async ({ value }: { value: CreateModpackFormData }) =>
+      await createModpack.mutateAsync(value),
   })
+
+  useEffect(() => {
+    if (createModpack.isSuccess) {
+      form.reset()
+      onSuccess()
+    }
+  }, [createModpack.isSuccess])
 
   return (
     <form
@@ -61,7 +58,7 @@ export function CreateModpackForm({
           name="avatarUrl"
           label="Avatar URL"
           placeholder="https://example.com/avatar.png"
-          disabled={isLoading}
+          disabled={createModpack.isPending}
           inputMode="url"
         />
         <TextField
@@ -69,14 +66,14 @@ export function CreateModpackForm({
           name="steamUrl"
           label="Steam Workshop URL"
           placeholder="https://steamcommunity.com/..."
-          disabled={isLoading}
+          disabled={createModpack.isPending}
           inputMode="url"
         />
       </div>
       <SubmitButton
-        isLoading={isLoading}
-        label={submitText}
-        loadingLabel="Saving..."
+        isLoading={createModpack.isPending}
+        label="Create"
+        loadingLabel="Creating..."
       />
     </form>
   )

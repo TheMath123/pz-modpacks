@@ -1,8 +1,6 @@
-import type { DModpack } from '@org/database/schemas'
 import { env } from '@/env'
-import { failure, headers, success } from '../helpers'
-
-type SuccessResponse = DModpack
+import { headers } from '../helpers'
+import type { IModpackDTO } from './dtos'
 
 interface CreateModpackParams {
   name: string
@@ -30,6 +28,10 @@ export async function createModpackService(params: CreateModpackParams) {
     body: JSON.stringify(body),
   })
 
-  if (res.status !== 201) return failure(res)
-  return success<SuccessResponse>(res)
+  if (res.status !== 201) {
+    const { error } = await res.json()
+    throw new Error(error.message ?? 'We have a problem creating this modpack')
+  }
+
+  return (await res.json()) as IModpackDTO
 }

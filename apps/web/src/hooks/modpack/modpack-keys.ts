@@ -1,15 +1,16 @@
-import type { ModpackFilters } from '@/services/modpack/get-public-modpacks.service'
+import type { PaginateQueryParams } from '@/services/dtos'
 
 export const modpackKeys = {
   all: ['modpacks'] as const,
   lists: () => [...modpackKeys.all, 'list'] as const,
-  list: (filters: ModpackFilters) => [...modpackKeys.lists(), filters] as const,
+  list: (queryParams: PaginateQueryParams) =>
+    [...modpackKeys.lists(), queryParams] as const,
   publicLists: () => [...modpackKeys.all, 'public'] as const,
-  publicList: (filters: ModpackFilters) =>
-    [...modpackKeys.publicLists(), filters] as const,
+  publicList: (queryParams: PaginateQueryParams) =>
+    [...modpackKeys.publicLists(), queryParams] as const,
   myLists: () => [...modpackKeys.all, 'my'] as const,
-  myList: (filters: ModpackFilters) =>
-    [...modpackKeys.myLists(), filters] as const,
+  myList: (queryParams: PaginateQueryParams) =>
+    [...modpackKeys.myLists(), queryParams] as const,
   details: () => [...modpackKeys.all, 'detail'] as const,
   detail: (id: string) => [...modpackKeys.details(), id] as const,
   membersLists: () => [...modpackKeys.all, 'members'] as const,

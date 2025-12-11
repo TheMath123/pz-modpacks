@@ -1,5 +1,6 @@
 import { env } from '@/env'
-import { headers } from '../../helpers'
+import type { ArchiveSuccess } from '@/services/dtos'
+import { headers } from '@/services/helpers'
 
 export async function removeModpackMemberService(
   modpackId: string,
@@ -13,9 +14,9 @@ export async function removeModpackMemberService(
     body: JSON.stringify({ email }),
   })
 
-  if (res.status !== 204 && res.status !== 200) {
+  if (res.status !== 200) {
     const { error } = await res.json()
     throw new Error(error.message ?? 'We have a problem adding this member')
   }
-  return await res.json()
+  return (await res.json()) as ArchiveSuccess
 }

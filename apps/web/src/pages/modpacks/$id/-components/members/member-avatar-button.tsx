@@ -5,11 +5,11 @@ import {
 } from '@org/design-system/components/ui/avatar'
 import { XIcon } from '@org/design-system/components/ui/icons'
 import { cn } from '@org/design-system/lib/utils'
-import type { ModpackMemberWithUser } from '@/services/modpack/get-members.service'
+import type { IMemberDTO } from '@/services/modpack/dtos'
 import { getInitials } from '@/utils/string'
 
 interface MemberAvatarButtonProps extends React.ComponentProps<'button'> {
-  member: ModpackMemberWithUser
+  member: IMemberDTO
   readOnly?: boolean
   disabledTooltip?: boolean
 }

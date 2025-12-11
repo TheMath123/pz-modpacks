@@ -1,6 +1,6 @@
 import { toast } from '@org/design-system/components/ui/sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ModpackService } from '@/services/modpack'
+import { MembersService } from '@/services/modpack/members'
 import { modpackKeys } from '../modpack/modpack-keys'
 
 interface AddMemberParams {
@@ -13,7 +13,7 @@ export function useAddModpackMember() {
 
   return useMutation({
     mutationFn: ({ modpackId, email }: AddMemberParams) =>
-      ModpackService.addMember(modpackId, email),
+      MembersService.add(modpackId, email),
     onSuccess: (_, variables) => {
       toast.success('Member added successfully')
       queryClient.invalidateQueries({

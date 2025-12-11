@@ -7,10 +7,10 @@ import { SubmitButton } from '@/components/form/submit-button'
 import { SwitchField } from '@/components/form/switch-field'
 import { TextField } from '@/components/form/text-field'
 import { useUpdateModpack } from '@/hooks'
-import type { ModpackWithMembers } from '@/services/modpack/get-modpack-details.service'
+import type { IModpackDTO } from '@/services/modpack/dtos'
 
 interface UpdateModpackFormProps {
-  modpack: ModpackWithMembers
+  modpack: IModpackDTO
   onSuccess: () => void
 }
 

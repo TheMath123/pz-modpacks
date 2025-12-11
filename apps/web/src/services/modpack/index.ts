@@ -1,21 +1,15 @@
 import { archiveModpackService } from './archive-modpack.service'
 import { createModpackService } from './create-modpack.service'
-import { getModpackMembersService } from './get-members.service'
-import { getModpackByIdService } from './get-modpack-details.service'
-import { getMyModpacksService } from './get-my-modpacks.service'
-import { getPublicModpacksService } from './get-public-modpacks.service'
-import { addModpackMemberService } from './members/add-member.service'
-import { removeModpackMemberService } from './members/remove-member.service'
+import { getModpackService } from './get-modpack.service'
+import { listMyModpacksService } from './list-my-modpacks.service'
+import { listPublicModpacksService } from './list-public-modpacks.service'
 import { updateModpackService } from './update-modpack.service'
 
 export const ModpackService = {
   create: createModpackService,
-  getById: getModpackByIdService,
-  getMembers: getModpackMembersService,
-  getMyModpacks: getMyModpacksService,
-  getPublicModpacks: getPublicModpacksService,
+  get: getModpackService,
+  listMyModpacks: listMyModpacksService,
+  listPublicModpacks: listPublicModpacksService,
   update: updateModpackService,
   archive: archiveModpackService,
-  addMember: addModpackMemberService,
-  removeMember: removeModpackMemberService,
 }

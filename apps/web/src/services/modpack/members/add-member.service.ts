@@ -1,6 +1,6 @@
-import type { DModpackMember } from '@org/database/schemas'
 import { env } from '@/env'
-import { headers } from '../../helpers'
+import { headers } from '@/services/helpers'
+import type { IModpackMemberDTO } from '../dtos'
 
 export async function addModpackMemberService(
   modpackId: string,
@@ -19,5 +19,5 @@ export async function addModpackMemberService(
     const { error } = await res.json()
     throw new Error(error.message ?? 'We have a problem adding this member')
   }
-  return (await res.json()) as DModpackMember
+  return (await res.json()) as IModpackMemberDTO
 }

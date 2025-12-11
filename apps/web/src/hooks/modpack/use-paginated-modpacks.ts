@@ -1,13 +1,12 @@
 import type { DModpack } from '@org/database/schemas'
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
-import type { ModpackFilters } from '@/services/modpack/get-public-modpacks.service'
-import type { PaginatedResponse } from '@/services/types'
+import type { PaginatedResponse, PaginateQueryParams } from '@/services/dtos'
 
 interface UsePaginatedModpacksOptions {
-  filters?: ModpackFilters
+  queryParams?: PaginateQueryParams
   queryKey: readonly unknown[]
-  queryFn: (filters: ModpackFilters) => Promise<{
+  queryFn: (queryParams: PaginateQueryParams) => Promise<{
     success: boolean
     data?: PaginatedResponse<DModpack>
     error?: string
@@ -19,7 +18,7 @@ interface UsePaginatedModpacksOptions {
 }
 
 export function usePaginatedModpacks({
-  filters = {},
+  queryParams = {},
   queryKey,
   queryFn,
   options,
@@ -27,7 +26,7 @@ export function usePaginatedModpacks({
   return useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await queryFn(filters)
+      const result = await queryFn(queryParams)
       if (!result.success) {
         return {
           data: [],

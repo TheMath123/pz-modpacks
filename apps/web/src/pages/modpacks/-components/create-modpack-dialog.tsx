@@ -8,28 +8,11 @@ import {
   DialogTrigger,
 } from '@org/design-system/components/ui/dialog'
 import { PlusIcon } from '@org/design-system/components/ui/icons'
-import { toast } from '@org/design-system/components/ui/sonner'
-import type { CreateModpackFormData } from '@org/validation/forms/modpack'
 import { useState } from 'react'
-import { useCreateModpack } from '@/hooks/modpack'
 import { CreateModpackForm } from './create-modpack-form'
 
 export function CreateModpackDialog() {
   const [open, setOpen] = useState(false)
-  const createModpack = useCreateModpack()
-
-  const handleSubmit = async (data: CreateModpackFormData) => {
-    const result = await createModpack.mutateAsync(data)
-
-    if (!result.success) {
-      toast.error(result.error.message ?? 'Failed to create modpack')
-      return
-    }
-
-    toast.success('Modpack created successfully')
-    setOpen(false)
-  }
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
@@ -47,11 +30,7 @@ export function CreateModpackDialog() {
             Create a new modpack to organize your favorite mods
           </DialogDescription>
         </DialogHeader>
-        <CreateModpackForm
-          onSubmit={handleSubmit}
-          isLoading={createModpack.isPending}
-          submitText="Create Modpack"
-        />
+        <CreateModpackForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   )

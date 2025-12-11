@@ -1,6 +1,6 @@
 import { toast } from '@org/design-system/components/ui/sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ModpackService } from '@/services/modpack'
+import { MembersService } from '@/services/modpack/members'
 import { modpackKeys } from '../modpack/modpack-keys'
 
 interface RemoveMemberParams {
@@ -13,7 +13,7 @@ export function useRemoveModpackMember() {
 
   return useMutation({
     mutationFn: ({ modpackId, email }: RemoveMemberParams) =>
-      ModpackService.removeMember(modpackId, email),
+      MembersService.remove(modpackId, email),
     onSuccess: (_, variables) => {
       toast.success('Member removed successfully')
       queryClient.invalidateQueries({

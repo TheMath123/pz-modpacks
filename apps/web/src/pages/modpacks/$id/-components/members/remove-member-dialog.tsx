@@ -9,15 +9,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@org/design-system/components/ui/alert-dialog'
-import { toast } from '@org/design-system/components/ui/sonner'
 import { useState } from 'react'
 import { useRemoveModpackMember } from '@/hooks/members'
-import type { ModpackMemberWithUser } from '@/services/modpack/get-members.service'
+import type { IMemberDTO } from '@/services/modpack/dtos'
 import { MemberAvatarButton } from './member-avatar-button'
 
 interface RemoveMemberDialogProps {
   modpackId: string
-  member: ModpackMemberWithUser
+  member: IMemberDTO
   canRemove?: boolean
   trigger: (props: React.ComponentProps<'button'>) => React.ReactElement
 }

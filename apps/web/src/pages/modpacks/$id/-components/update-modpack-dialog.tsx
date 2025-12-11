@@ -9,11 +9,11 @@ import {
 } from '@org/design-system/components/ui/dialog'
 import { PencilIcon } from '@org/design-system/components/ui/icons'
 import { useState } from 'react'
-import type { ModpackWithMembers } from '@/services/modpack/get-modpack-details.service'
+import type { IModpackDTO } from '@/services/modpack/dtos'
 import { UpdateModpackForm } from './update-modpack-form'
 
 interface UpdateModpackFormProps {
-  modpack: ModpackWithMembers
+  modpack: IModpackDTO
 }
 
 export function UpdateModpackDialog({ modpack }: UpdateModpackFormProps) {

@@ -1,25 +1,16 @@
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
-import { ModpackService } from '@/services/modpack'
-import type { ModpackMemberWithUser } from '@/services/modpack/get-members.service'
+import type { IMemberDTO } from '@/services/modpack/dtos'
+import { MembersService } from '@/services/modpack/members'
 import { modpackKeys } from '../modpack/modpack-keys'
 
 export function useMembers(
   modpackId: string,
-  options?: Omit<
-    UseQueryOptions<ModpackMemberWithUser[]>,
-    'queryKey' | 'queryFn'
-  >,
-): UseQueryResult<ModpackMemberWithUser[]> {
+  options?: Omit<UseQueryOptions<IMemberDTO[]>, 'queryKey' | 'queryFn'>,
+): UseQueryResult<IMemberDTO[]> {
   return useQuery({
     queryKey: modpackKeys.members(modpackId),
-    queryFn: async () => {
-      const response = await ModpackService.getMembers(modpackId)
-      if (!response.success) {
-        throw new Error(response.error.message || 'Failed to fetch members')
-      }
-      return response.data
-    },
+    queryFn: async () => await MembersService.get(modpackId),
     enabled: !!modpackId,
     ...options,
   })
