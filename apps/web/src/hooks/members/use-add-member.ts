@@ -1,3 +1,4 @@
+import { toast } from '@org/design-system/components/ui/sonner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ModpackService } from '@/services/modpack'
 import { modpackKeys } from '../modpack/modpack-keys'
@@ -14,13 +15,19 @@ export function useAddModpackMember() {
     mutationFn: ({ modpackId, email }: AddMemberParams) =>
       ModpackService.addMember(modpackId, email),
     onSuccess: (_, variables) => {
-      // Invalidate specific modpack detail to refresh members list
+      toast.success('Member added successfully')
       queryClient.invalidateQueries({
         queryKey: modpackKeys.members(variables.modpackId),
       })
       queryClient.invalidateQueries({
         queryKey: modpackKeys.detail(variables.modpackId),
       })
+    },
+    onError: (error) => {
+      toast.error(
+        (error as Error).message ||
+          'Failed to add member. Please try again later.',
+      )
     },
   })
 }

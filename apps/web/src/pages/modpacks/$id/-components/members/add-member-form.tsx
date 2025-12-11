@@ -1,19 +1,15 @@
 import { useAppForm } from '@org/design-system/components/ui/form-tanstack'
-import {
-  type AddMemberFormData,
-  addMemberFormSchema,
-} from '@org/validation/forms/modpack'
+import { addMemberFormSchema } from '@org/validation/forms/modpack'
 import { SubmitButton, TextField } from '@/components/form'
+import { useAddModpackMember } from '@/hooks'
 
 interface AddMemberFormProps {
-  onSubmit: (data: AddMemberFormData) => void | Promise<void>
-  isLoading?: boolean
+  onSuccess: () => void
+  modpackId: string
 }
 
-export function AddMemberForm({
-  onSubmit,
-  isLoading = false,
-}: AddMemberFormProps) {
+export function AddMemberForm({ onSuccess, modpackId }: AddMemberFormProps) {
+  const addMember = useAddModpackMember()
   const form = useAppForm({
     defaultValues: {
       email: '',
@@ -21,8 +17,14 @@ export function AddMemberForm({
     validators: {
       onSubmit: addMemberFormSchema,
     },
-    onSubmit: ({ value }) => onSubmit(value),
+    onSubmit: async ({ value }) =>
+      await addMember.mutateAsync({
+        modpackId,
+        email: value.email,
+      }),
   })
+
+  addMember.isSuccess && onSuccess()
 
   return (
     <form
@@ -39,11 +41,11 @@ export function AddMemberForm({
         label="Email *"
         placeholder="user@example.com"
         inputMode="email"
-        disabled={isLoading}
+        disabled={addMember.isPending}
       />
 
       <SubmitButton
-        isLoading={isLoading}
+        isLoading={addMember.isPending}
         label="Add Member"
         loadingLabel="Adding.."
       />
