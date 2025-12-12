@@ -1,8 +1,10 @@
+import { addModInModpackSchema } from '@org/validation/forms/mod/add-mod-in-modpack.schema'
 import { modpackController } from '@/domain/modpack/controler'
 import {
   addMemberSchema,
   createModpackSchema,
   listModpacksQuerySchema,
+  listModsQuerySchema,
   modpackIdParamSchema,
   removeMemberSchema,
   updateModpackSchema,
@@ -176,6 +178,45 @@ export function modpacksRoutes(app: Server) {
           tags: ['Members of Modpacks'],
           description: 'Remove a member from the modpack by email (owner only)',
           summary: 'Remove Modpack Member',
+        },
+      },
+    )
+
+    // Add mod
+    route.post(
+      '/:id/mods',
+      async ({ status, params, body, user }) => {
+        const res = await modpackController.addMod({ params, body, user })
+        return status(res.status, res.value)
+      },
+      {
+        auth: true,
+        params: modpackIdParamSchema,
+        body: addModInModpackSchema,
+        detail: {
+          tags: ['Mods'],
+          description: 'Add a mod to the modpack (owner/member only)',
+          summary: 'Add Mod',
+        },
+      },
+    )
+
+    // List mods
+    route.get(
+      '/:id/mods',
+      async ({ status, params, query }) => {
+        const res = await modpackController.listMods({
+          query: { ...query, modpackId: params.id },
+        })
+        return status(res.status, res.value)
+      },
+      {
+        params: modpackIdParamSchema,
+        query: listModsQuerySchema,
+        detail: {
+          tags: ['Mods'],
+          description: 'List mods in a modpack',
+          summary: 'List Mods',
         },
       },
     )
