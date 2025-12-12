@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio'
+import { env } from '@/env'
 import type {
   ScrapedModInfo,
   SteamWorkshopFileDetails,
@@ -145,4 +146,4 @@ export class SteamClient {
   }
 }
 
-export const steamClient = new SteamClient(process.env.STEAM_API_KEY || '')
+export const steamClient = new SteamClient(env.STEAM_API_KEY)
