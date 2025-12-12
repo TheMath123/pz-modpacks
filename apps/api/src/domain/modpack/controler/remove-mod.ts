@@ -27,6 +27,10 @@ export async function removeModController({
     return new ApiResponse({ error: { message: 'Modpack not found' } }, 404)
   }
 
+  if (!modpack.isActive) {
+    return new ApiResponse({ error: { message: 'Modpack is not active' } }, 401)
+  }
+
   const isOwner = modpack.owner === user.id
   let isMember = false
 
@@ -47,6 +51,7 @@ export async function removeModController({
 
   // 2. Check if mod exists in modpack
   const exists = await modpackModRepository.exists(modpackId, modId)
+  console.log(exists)
   if (!exists) {
     return new ApiResponse(
       { error: { message: 'Mod not found in modpack' } },
@@ -61,12 +66,26 @@ export async function removeModController({
 
   // 3. Analyze dependencies to remove
   const allModpackMods = await modpackModRepository.findByModpack(modpackId)
+
+  // Check if the target mod is required by any other mod in the modpack
+  const requiredBy = allModpackMods.filter((m) =>
+    m.mod.requiredMods?.includes(targetMod.workshopId),
+  )
+
+  if (requiredBy.length > 0) {
+    const names = requiredBy.map((m) => m.mod.name).join(', ')
+    return new ApiResponse(
+      {
+        error: {
+          message: `Cannot remove mod because it is required by other mods: ${names}`,
+        },
+      },
+      400,
+    )
+  }
+
   const modsToRemove = new Set<string>()
   modsToRemove.add(modId)
-
-  // Helper to get Workshop ID from Mod ID (UUID)
-  const getWorkshopId = (id: string) =>
-    allModpackMods.find((m) => m.modId === id)?.mod.workshopId
 
   // Helper to get Mod ID (UUID) from Workshop ID
   const getModId = (workshopId: string) =>

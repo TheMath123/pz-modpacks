@@ -93,11 +93,14 @@ export class ModpackModRepository {
       where: and(
         eq(modpacksMods.modpackId, modpackId),
         eq(modpacksMods.modId, modId),
-        eq(modpacksMods.isActive, true),
+        // eq(modpacksMods.isActive, true),
       ),
     })
+    // TODO: ARRUMAR PARA BUSCAR O MODPACK
 
-    return !!modpackMod
+    console.log(modpackMod)
+
+    return modpackMod
   }
 
   /**

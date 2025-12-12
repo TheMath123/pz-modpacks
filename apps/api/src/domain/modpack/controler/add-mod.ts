@@ -31,6 +31,10 @@ export async function addModController({
     return new ApiResponse({ error: { message: 'Modpack not found' } }, 404)
   }
 
+  if (!modpack.isActive) {
+    return new ApiResponse({ error: { message: 'Modpack is not active' } }, 401)
+  }
+
   const isOwner = modpack.owner === user.id
   let isMember = false
 

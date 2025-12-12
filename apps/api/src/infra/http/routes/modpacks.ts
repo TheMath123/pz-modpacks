@@ -221,6 +221,24 @@ export function modpacksRoutes(app: Server) {
       },
     )
 
+    // Remove mod
+    route.delete(
+      '/:id/mods/:modId',
+      async ({ status, params, user }) => {
+        const res = await modpackController.removeMod({ params, user })
+        return status(res.status, res.value)
+      },
+      {
+        auth: true,
+        params: modpackIdParamSchema,
+        detail: {
+          tags: ['Mods'],
+          description: 'Remove a mod from the modpack (owner/member only)',
+          summary: 'Remove Mod',
+        },
+      },
+    )
+
     return route
   })
 
