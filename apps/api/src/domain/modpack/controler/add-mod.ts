@@ -145,8 +145,18 @@ async function processMod(
   }
 
   // Add to modpack if not exists
-  const existsInModpack = await modpackModRepository.exists(modpackId, mod.id)
-  if (!existsInModpack) {
+  const existingModpackMod = await modpackModRepository.findMod(
+    modpackId,
+    mod.id,
+  )
+
+  if (existingModpackMod) {
+    if (!existingModpackMod.isActive) {
+      await modpackModRepository.reactivateMod(modpackId, mod.id)
+      addedMods.push(mod.name)
+    }
+    // If active, do nothing (already added)
+  } else {
     await modpackModRepository.addMod({ modpackId, modId: mod.id })
     addedMods.push(mod.name)
   }

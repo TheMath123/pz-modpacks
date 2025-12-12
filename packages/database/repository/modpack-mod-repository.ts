@@ -26,6 +26,36 @@ export class ModpackModRepository {
   }
 
   /**
+   * Find a mod in a modpack (active or inactive)
+   */
+  async findMod(
+    modpackId: string,
+    modId: string,
+  ): Promise<DModpackMod | undefined> {
+    return database.query.modpacksMods.findFirst({
+      where: and(
+        eq(modpacksMods.modpackId, modpackId),
+        eq(modpacksMods.modId, modId),
+      ),
+    })
+  }
+
+  /**
+   * Reactivate a mod in a modpack
+   */
+  async reactivateMod(modpackId: string, modId: string): Promise<void> {
+    await database
+      .update(modpacksMods)
+      .set({ isActive: true })
+      .where(
+        and(
+          eq(modpacksMods.modpackId, modpackId),
+          eq(modpacksMods.modId, modId),
+        ),
+      )
+  }
+
+  /**
    * Add multiple mods to a modpack
    */
   async addMods(modpackId: string, modIds: string[]): Promise<DModpackMod[]> {
