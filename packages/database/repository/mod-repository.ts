@@ -25,6 +25,12 @@ export interface ListModsParams {
 }
 
 export class ModRepository {
+  async findById(id: string): Promise<DMod | undefined> {
+    return database.query.mods.findFirst({
+      where: eq(mods.id, id),
+    })
+  }
+
   async findByWorkshopId(workshopId: string): Promise<DMod | undefined> {
     return database.query.mods.findFirst({
       where: eq(mods.workshopId, workshopId),

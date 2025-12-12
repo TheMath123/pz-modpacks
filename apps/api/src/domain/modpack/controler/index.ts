@@ -8,8 +8,8 @@ import { listMembersController } from './list-members'
 import { listModsController } from './list-mods'
 import { listMyModpacksController } from './list-my'
 import { removeMemberController } from './remove-member'
-import { updateModpackController } from './update'
 import { removeModController } from './remove-mod'
+import { updateModpackController } from './update'
 
 export const modpackController = {
   create: createModpackController,
