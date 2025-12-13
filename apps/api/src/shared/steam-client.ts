@@ -126,11 +126,18 @@ export class SteamClient {
     const workshopIdMatch = cleanText.match(/Workshop ID:\s*(\d+)/i)
 
     const modIdSet = new Set<string>()
-    // Improved regex to capture Mod ID more reliably
-    const modIdMatches = cleanText.matchAll(/Mod ID:\s*([^\s\n<]+)/gi)
-    for (const match of modIdMatches) {
+    // Match "Mod ID:" followed by anything until newline or <br>
+    const modIdLines = cleanText.matchAll(/Mod ID:\s*([^\n<]+)/gi)
+    for (const match of modIdLines) {
       if (match[1]) {
-        modIdSet.add(match[1].trim())
+        // Split by comma or semicolon
+        const ids = match[1].split(/[,;]/)
+        for (const id of ids) {
+          const trimmed = id.trim()
+          if (trimmed) {
+            modIdSet.add(trimmed)
+          }
+        }
       }
     }
 

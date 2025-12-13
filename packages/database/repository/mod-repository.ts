@@ -1,11 +1,21 @@
-import { and, asc, count, desc, eq, ilike, inArray, or } from 'drizzle-orm'
+import {
+  and,
+  arrayContains,
+  asc,
+  count,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  or,
+} from 'drizzle-orm'
 import { database } from '../index'
 import type { DMod } from '../schemas'
 import { modpacksMods, mods } from '../schemas'
 
 export interface CreateModData {
   name: string
-  steamModId: string
+  steamModId: string[]
   workshopId: string
   mapFolders?: string[]
   requiredMods?: string[]
@@ -39,7 +49,7 @@ export class ModRepository {
 
   async findBySteamModId(steamModId: string): Promise<DMod | undefined> {
     return database.query.mods.findFirst({
-      where: eq(mods.steamModId, steamModId),
+      where: arrayContains(mods.steamModId, [steamModId]),
     })
   }
 

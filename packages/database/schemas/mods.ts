@@ -6,7 +6,7 @@ import { tags } from './tags'
 export const mods = pgTable('mods', {
   id,
   name: text('name').notNull(),
-  steamModId: text('steam_mod_id').notNull(),
+  steamModId: text('steam_mod_id').array().notNull(),
   workshopId: text('workshop_id').notNull(),
   mapFolders: text('map_folders').array(),
   isActive: boolean('is_active').default(true).notNull(),

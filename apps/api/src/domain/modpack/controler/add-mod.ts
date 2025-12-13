@@ -124,14 +124,12 @@ async function processMod(
     const image = steamDetails?.preview_url || scrapedInfo.imageURL
 
     // Handle modId (can be multiple)
-    const modIdStr = scrapedInfo.mod_id
-      ? scrapedInfo.mod_id.join(',')
-      : 'unknown'
+    const modIds = scrapedInfo.mod_id || ['unknown']
 
     // Create mod
     mod = await modRepository.create({
       name: title,
-      steamModId: modIdStr,
+      steamModId: modIds,
       workshopId: workshopId,
       mapFolders: scrapedInfo.map_folder || [],
       requiredMods: scrapedInfo.modsRequirements
