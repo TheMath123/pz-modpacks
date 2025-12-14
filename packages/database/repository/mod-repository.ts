@@ -24,6 +24,7 @@ export interface CreateModData {
   steamUrl?: string
   avatarUrl?: string
   highlights?: string[]
+  tags?: string[]
 }
 
 export interface ListModsParams {

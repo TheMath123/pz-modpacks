@@ -11,7 +11,8 @@ export interface SteamWorkshopFileDetails {
   preview_url: string
   hcontent_preview: string
   title: string
-  description: string
+  file_description: string
+  file_type: number
   time_created: number
   time_updated: number
   visibility: number
@@ -23,6 +24,14 @@ export interface SteamWorkshopFileDetails {
   lifetime_favorited: number
   views: number
   tags: { tag: string }[]
+  previews?: {
+    previewid: string
+    sortorder: number
+    url: string
+    size: number
+    filename: string
+    preview_type: number
+  }[]
 }
 
 export interface ScrapedModInfo {
@@ -35,6 +44,7 @@ export interface ScrapedModInfo {
   modsRequirements: { name: string; id: string | null; url: string }[]
   error?: string | null
   rawDescription?: string
+  isCollection?: boolean
 }
 
 export interface WorkshopInfo {

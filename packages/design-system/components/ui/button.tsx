@@ -4,7 +4,7 @@ import { cn } from '@org/design-system/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 const buttonVariants = cva(
-  'font-head transition-all rounded outline-hidden cursor-pointer duration-200 font-medium flex items-center',
+  'font-head transition-all rounded outline-hidden cursor-pointer duration-200 font-medium flex items-center disabled:cursor-default  disabled:hover:bg-primary disabled:active:translate-0 disabled:opacity-50 select-none justify-center',
   {
     variants: {
       variant: {

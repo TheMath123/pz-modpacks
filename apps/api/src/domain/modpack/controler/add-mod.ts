@@ -1,13 +1,8 @@
 import type { User } from '@org/auth/types'
-import {
-  modpackMemberRepository,
-  modpackModRepository,
-  modpackRepository,
-  modRepository,
-} from '@org/database'
+import { modpackMemberRepository, modpackRepository } from '@org/database'
 import type { AddModInModpackFormData } from '@org/validation/forms/mod/add-mod-in-modpack.schema'
-import { steamClient } from '@/shared/steam-client'
-import { ApiResponse } from '@/utils'
+import { ApiResponse, extractWorkshopId } from '@/utils'
+import { addModToModpackService } from '../services/add-mod-to-modpack'
 
 interface AddModControllerParams {
   body: AddModInModpackFormData
@@ -67,13 +62,16 @@ export async function addModController({
   const addedMods: string[] = []
 
   try {
-    await processMod(workshopId, modpackId, processedWorkshopIds, addedMods)
-  } catch (error) {
-    console.error('Error processing mod:', error)
-    return new ApiResponse(
-      { error: { message: 'Failed to process mod', details: error } },
-      500,
+    await addModToModpackService.execute(
+      workshopId,
+      modpackId,
+      processedWorkshopIds,
+      addedMods,
     )
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error'
+    return new ApiResponse({ error: { message: errorMessage } }, 400)
   }
 
   return new ApiResponse(
@@ -84,97 +82,4 @@ export async function addModController({
     },
     201,
   )
-}
-
-function extractWorkshopId(input: string): string | null {
-  if (/^\d+$/.test(input)) return input
-  try {
-    const url = new URL(input)
-    return url.searchParams.get('id')
-  } catch {
-    const match = input.match(/id=(\d+)/)
-    return match ? match[1] : null
-  }
-}
-
-async function processMod(
-  workshopId: string,
-  modpackId: string,
-  processedWorkshopIds: Set<string>,
-  addedMods: string[],
-): Promise<string | null> {
-  if (processedWorkshopIds.has(workshopId)) return null
-  processedWorkshopIds.add(workshopId)
-
-  // Check if mod exists in DB
-  let mod = await modRepository.findByWorkshopId(workshopId)
-
-  if (!mod) {
-    // Fetch from Steam
-    const steamDetails = await steamClient.querySteamWorkshopFiles(workshopId)
-    const scrapedInfo = await steamClient.scrapeWorkshopPage(workshopId)
-
-    if (!steamDetails && !scrapedInfo.title) {
-      console.warn(`Mod ${workshopId} not found on Steam`)
-      return null
-    }
-
-    const title = steamDetails?.title || scrapedInfo.title || 'Unknown Mod'
-    const description =
-      steamDetails?.description ||
-      scrapedInfo.description ||
-      scrapedInfo.rawDescription?.replace(/<[^>]*>?/gm, '')
-    const image = steamDetails?.preview_url || scrapedInfo.imageURL
-
-    // Handle modId (can be multiple)
-    const modIds = scrapedInfo.mod_id || ['unknown']
-
-    // Create mod
-    mod = await modRepository.create({
-      name: title,
-      steamModId: modIds,
-      workshopId: workshopId,
-      mapFolders: scrapedInfo.map_folder || [],
-      requiredMods: scrapedInfo.modsRequirements
-        .map((r) => r.id)
-        .filter((id): id is string => !!id),
-      description: description,
-      steamUrl: `https://steamcommunity.com/sharedfiles/filedetails/?id=${workshopId}`,
-      avatarUrl: image,
-      highlights: [],
-    })
-  }
-
-  // Add to modpack if not exists
-  const existingModpackMod = await modpackModRepository.findMod(
-    modpackId,
-    mod.id,
-  )
-
-  if (existingModpackMod) {
-    if (!existingModpackMod.isActive) {
-      await modpackModRepository.reactivateMod(modpackId, mod.id)
-      addedMods.push(mod.name)
-    }
-    // If active, do nothing (already added)
-  } else {
-    await modpackModRepository.addMod({ modpackId, modId: mod.id })
-    addedMods.push(mod.name)
-  }
-
-  // Process requirements
-  if (mod.requiredMods && mod.requiredMods.length > 0) {
-    for (const reqWorkshopId of mod.requiredMods) {
-      if (reqWorkshopId) {
-        await processMod(
-          reqWorkshopId,
-          modpackId,
-          processedWorkshopIds,
-          addedMods,
-        )
-      }
-    }
-  }
-
-  return mod.id
 }

@@ -7,6 +7,7 @@ import {
 import { useTheme } from '@org/design-system/providers'
 import { Link } from '@tanstack/react-router'
 import type { IModDTO } from '@/services/mod/dtos'
+import { ModDetail } from './mod-detail'
 import { RemoveModDialog } from './remove-mod-dialog'
 
 interface ModCardProps {
@@ -24,7 +25,7 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
 
   return (
     <Card className="flex flex-row items-center p-0 overflow-hidden gap-0">
-      <div className="relative bg-primary/30 dark:bg-primary aspect-square h-full flex items-center justify-center  text-muted-foreground/20 overflow-clip">
+      <div className="relative bg-primary/30 dark:bg-primary aspect-square h-[20px] flex items-center justify-center  text-muted-foreground/20 overflow-clip">
         {data.avatarUrl ? (
           <img
             src={data.avatarUrl}
@@ -53,9 +54,12 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
             {data.name}
           </h1>
         </Link>
-        <p className="line-clamp-2 text-sm text-muted-foreground">
-          {data.description}
-        </p>
+        <div>
+          <p className="line-clamp-2 text-sm text-muted-foreground">
+            {data.description}
+          </p>
+          <ModDetail data={data} />
+        </div>
 
         {canManage && (
           <RemoveModDialog

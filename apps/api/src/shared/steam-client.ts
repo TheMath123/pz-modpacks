@@ -88,6 +88,11 @@ export class SteamClient {
       const image = $('meta[property="og:image"]').attr('content')
       const rawDescription = $('#highlightContent').html() || ''
 
+      // Check if it is a collection
+      const isCollection =
+        $('.collectionChildren').length > 0 ||
+        $('.subscribeCollection').length > 0
+
       $('.requiredItemsContainer a').each((_, element) => {
         const url = $(element).attr('href')
         const name = $(element).find('.requiredItem').text().trim()
@@ -108,6 +113,7 @@ export class SteamClient {
         modsRequirements: modsRequirements,
         ...modInfo,
         error: null,
+        isCollection,
       }
     } catch (error) {
       console.error('Error scraping workshop page:', error)
