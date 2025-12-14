@@ -1,18 +1,10 @@
-import { CopyButton } from '@org/design-system/components/ui/button-copy'
 import { Card, CardTitle } from '@org/design-system/components/ui/card'
-import {
-  Popover,
-  PopoverContent,
-  PopoverPositioner,
-  PopoverTrigger,
-} from '@org/design-system/components/ui/popover'
-import { Separator } from '@org/design-system/components/ui/separator'
 import { useTheme } from '@org/design-system/providers'
 import { Link } from '@tanstack/react-router'
 import type { IModDTO } from '@/services/mod/dtos'
 import { ModDetail } from './mod-detail'
 import { ModIdsDisplay } from './mod-ids-display'
-import { ModMapFolderDisplay } from './mod-mapfolder-display'
+import { ModMapFolderDisplay } from './mod-map-folder-display'
 import { ModRequiredModsDisplay } from './mod-required-mods-display'
 import { RemoveModDialog } from './remove-mod-dialog'
 

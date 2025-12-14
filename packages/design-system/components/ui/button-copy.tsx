@@ -40,7 +40,7 @@ export function CopyButton({
     try {
       await navigator.clipboard.writeText(textToCopy)
       setIsCopied(true)
-    } catch (err: any) {
+    } catch (_err: unknown) {
       // log the error if needed
     }
   }
