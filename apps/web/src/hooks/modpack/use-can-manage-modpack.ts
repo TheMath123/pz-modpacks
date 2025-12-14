@@ -1,7 +1,7 @@
-import { auth } from '@/lib/auth'
+import { authClient } from '@/lib/auth'
 
 export function useCanManageModpack(ownerId: string) {
-  const { data: session } = auth.useSession()
+  const { data: session } = authClient.useSession()
 
   if (!session?.user?.id) {
     return false
