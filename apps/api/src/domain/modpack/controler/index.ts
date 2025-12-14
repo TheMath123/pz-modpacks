@@ -3,6 +3,7 @@ import { addModController } from './add-mod'
 import { archiveModpackController } from './archive'
 import { createModpackController } from './create'
 import { getModpackByIdController } from './get-by-id'
+import { getPublicModpackByIdController } from './get-public-by-id'
 import { listPublicModpacksController } from './list'
 import { listMembersController } from './list-members'
 import { listModsController } from './list-mods'
@@ -18,6 +19,7 @@ export const modpackController = {
   listPublic: listPublicModpacksController,
   listMy: listMyModpacksController,
   getById: getModpackByIdController,
+  getPublicById: getPublicModpackByIdController,
   addMember: addMemberController,
   removeMember: removeMemberController,
   listMembers: listMembersController,
