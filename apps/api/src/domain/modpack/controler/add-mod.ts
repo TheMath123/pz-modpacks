@@ -120,7 +120,10 @@ async function processMod(
     }
 
     const title = steamDetails?.title || scrapedInfo.title || 'Unknown Mod'
-    const description = steamDetails?.description || scrapedInfo.description
+    const description =
+      steamDetails?.description ||
+      scrapedInfo.description ||
+      scrapedInfo.rawDescription?.replace(/<[^>]*>?/gm, '')
     const image = steamDetails?.preview_url || scrapedInfo.imageURL
 
     // Handle modId (can be multiple)
