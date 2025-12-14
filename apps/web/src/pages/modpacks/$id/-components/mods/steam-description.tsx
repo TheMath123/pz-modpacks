@@ -162,7 +162,7 @@ function renderTag(
   tagName: string,
   param: string | undefined,
   children: React.ReactNode[],
-  key: any,
+  key: string | number,
 ) {
   switch (tagName) {
     case 'b':
