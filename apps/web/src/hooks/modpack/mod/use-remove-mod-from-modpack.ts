@@ -17,7 +17,7 @@ export function useRemoveModFromModpack() {
     onSuccess: (_, variables) => {
       toast.success('Mod removed successfully')
       queryClient.invalidateQueries({
-        queryKey: modpackModsKeys.list(variables.modpackId),
+        queryKey: modpackModsKeys.list(variables.modpackId, {}),
       })
     },
     onError: (error) => {
