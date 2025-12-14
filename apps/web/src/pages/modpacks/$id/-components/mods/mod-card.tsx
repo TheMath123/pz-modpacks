@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@org/design-system/components/ui/card'
+import { Card, CardTitle } from '@org/design-system/components/ui/card'
 import { useTheme } from '@org/design-system/providers'
 import { Link } from '@tanstack/react-router'
 import type { IModDTO } from '@/services/mod/dtos'
@@ -25,7 +20,7 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
 
   return (
     <Card className="flex flex-row items-center p-0 overflow-hidden gap-0">
-      <div className="relative bg-primary/30 dark:bg-primary aspect-square h-[20px] flex items-center justify-center  text-muted-foreground/20 overflow-clip">
+      <div className="relative bg-primary/30 dark:bg-primary aspect-square h-32 flex items-center justify-center  text-muted-foreground/20 overflow-clip">
         {data.avatarUrl ? (
           <img
             src={data.avatarUrl}
@@ -44,20 +39,16 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
           />
         )}
       </div>
-      <div className="p-2">
-        <Link
-          to={data.steamUrl || '#'}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h1 className="text-base hover:underline wrap-break-word">
-            {data.name}
-          </h1>
-        </Link>
-        <div>
-          <p className="line-clamp-2 text-sm text-muted-foreground">
-            {data.description}
-          </p>
+      <div className="flex flex-col items-start justify-between gap-2 p-2 h-full ">
+        <div className="space-y-2">
+          <Link
+            to={data.steamUrl || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            <CardTitle>{data.name}</CardTitle>
+          </Link>
           <ModDetail data={data} />
         </div>
 
