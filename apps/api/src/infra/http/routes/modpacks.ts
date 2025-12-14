@@ -31,6 +31,23 @@ export function modpacksRoutes(app: Server) {
       },
     )
 
+    // Get public modpack by ID (no auth required)
+    route.get(
+      '/public/:id',
+      async ({ status, params }) => {
+        const res = await modpackController.getPublicById({ params })
+        return status(res.status, res.value)
+      },
+      {
+        params: modpackIdParamSchema,
+        detail: {
+          tags: ['Modpacks'],
+          description: 'Get public modpack details by ID',
+          summary: 'Get Public Modpack By ID',
+        },
+      },
+    )
+
     // List user's modpacks (auth required)
     route.get(
       '/my',

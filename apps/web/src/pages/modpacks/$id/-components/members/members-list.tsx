@@ -1,5 +1,4 @@
 import { Button } from '@org/design-system/components/ui/button'
-
 import { CircleNotchIcon, XIcon } from '@org/design-system/components/ui/icons'
 import {
   Popover,
@@ -8,6 +7,8 @@ import {
   PopoverTrigger,
 } from '@org/design-system/components/ui/popover'
 import { useMembers } from '@/hooks/members'
+import { authClient } from '@/lib/auth'
+import type { IMemberDTO } from '@/services/modpack/dtos'
 import { AddMemberButton } from './add-member-button'
 import { AddMemberDialog } from './add-member-dialog'
 import { MemberAvatarButton } from './member-avatar-button'
@@ -23,9 +24,10 @@ export function MembersList({
   modpackId,
   canManageMembers = false,
 }: MembersListProps) {
+  const { isPending, data: owner } = authClient.useSession()
   const { data: members, isLoading } = useMembers(modpackId)
 
-  if (isLoading) {
+  if (isLoading || isPending) {
     return (
       <div className="flex items-center gap-2">
         <CircleNotchIcon className="h-4 w-4 animate-spin" weight="bold" />
@@ -38,7 +40,12 @@ export function MembersList({
 
   if (!members || members.length === 0) {
     return (
-      <div className="flex items-center gap-2 -translate-x-3">
+      <div className="flex flex-row items-center -space-x-4">
+        <MemberAvatarButton
+          member={owner as unknown as IMemberDTO}
+          isAuthor
+          readOnly
+        />
         {canManageMembers && (
           <AddMemberDialog
             modpackId={modpackId}
@@ -54,6 +61,11 @@ export function MembersList({
 
   return (
     <div className="flex flex-row items-center -space-x-2">
+      <MemberAvatarButton
+        member={owner as unknown as IMemberDTO}
+        isAuthor
+        readOnly
+      />
       {visibleMembers.map((member) => (
         <RemoveMemberDialog
           key={member.id}

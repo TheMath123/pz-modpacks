@@ -11,12 +11,14 @@ import { getInitials } from '@/utils/string'
 interface MemberAvatarButtonProps extends React.ComponentProps<'button'> {
   member: IMemberDTO
   readOnly?: boolean
+  isAuthor?: boolean
   disabledTooltip?: boolean
 }
 export function MemberAvatarButton({
   member,
   readOnly = false,
   className,
+  isAuthor = false,
   disabledTooltip = false,
   ...props
 }: MemberAvatarButtonProps) {
@@ -26,7 +28,7 @@ export function MemberAvatarButton({
       className={cn(
         'group relative active:scale-95',
         !readOnly && 'cursor-pointer hover:z-10',
-        readOnly && 'cursor-default',
+        readOnly && 'cursor-default active:scale-100',
         className,
       )}
       {...props}
@@ -48,6 +50,11 @@ export function MemberAvatarButton({
           <span className="text-xs text-muted-foreground truncate">
             {member.user.email}
           </span>
+          {isAuthor ? (
+            <span className="text-muted-foreground font-semibold">Author</span>
+          ) : (
+            <span className="text-muted-foreground font-medium">Member</span>
+          )}
         </div>
       )}
     </button>

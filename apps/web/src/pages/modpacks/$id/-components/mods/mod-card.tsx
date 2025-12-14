@@ -1,4 +1,8 @@
-import { Card, CardTitle } from '@org/design-system/components/ui/card'
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+} from '@org/design-system/components/ui/card'
 import { useTheme } from '@org/design-system/providers'
 import { Link } from '@tanstack/react-router'
 import type { IModDTO } from '@/services/mod/dtos'
@@ -16,9 +20,9 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
   if (!data || !modpackId) return null
 
   return (
-    <Card className="flex flex-row items-center justify-between p-4 gap-4">
+    <Card className="flex flex-row items-center justify-between p-0 gap-4 overflow-clip">
       <div className="flex flex-row items-center gap-4">
-        <div className="relative bg-primary/30 dark:bg-primary aspect-square h-12 w-12 flex items-center justify-center rounded-lg text-muted-foreground/20 overflow-clip">
+        <div className="relative bg-primary/30 dark:bg-primary aspect-square h-24 flex items-center justify-center  text-muted-foreground/20 overflow-clip">
           {data.avatarUrl ? (
             <img
               src={data.avatarUrl}
@@ -47,6 +51,9 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
               {data.name}
             </Link>
           </CardTitle>
+          <CardDescription className="line-clamp-2">
+            {data.description}
+          </CardDescription>
         </div>
       </div>
 
