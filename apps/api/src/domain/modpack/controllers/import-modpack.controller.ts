@@ -2,8 +2,8 @@ import type { User } from '@org/auth/types'
 import type { ModpackMemberRepository } from '@org/database/repository/modpack-member-repository'
 import type { ModpackRepository } from '@org/database/repository/modpack-repository'
 import type { ImportModpackFormData } from '@org/validation/forms/modpack/import-modpack.schema'
+import { modpackImportQueue } from '@/infra/queue/modpack-import/queue'
 import { ApiResponse } from '@/utils'
-import type { ImportModpackUseCase } from '../use-cases/import-modpack-use-case'
 
 interface ImportModpackControllerParams {
   body: ImportModpackFormData
@@ -17,7 +17,6 @@ export class ImportModpackController {
   constructor(
     private modpackRepository: ModpackRepository,
     private modpackMemberRepository: ModpackMemberRepository,
-    private importModpackUseCase: ImportModpackUseCase,
   ) {}
 
   async handle({ body, params, user }: ImportModpackControllerParams) {
@@ -61,23 +60,24 @@ export class ImportModpackController {
     }
 
     try {
-      const result = await this.importModpackUseCase.execute(
+      const job = await modpackImportQueue.add('import-modpack', {
         modpackId,
         steamUrl,
-      )
-      return new ApiResponse(result, 200)
-    } catch (error) {
-      console.error('Error importing modpack:', error)
+        userId: user.id,
+      })
+
       return new ApiResponse(
         {
-          error: {
-            message:
-              error instanceof Error
-                ? error.message
-                : 'Failed to import modpack',
-          },
+          message: 'Import started in background',
+          jobId: job.id,
         },
-        400,
+        200,
+      )
+    } catch (error) {
+      console.error('Failed to enqueue import job:', error)
+      return new ApiResponse(
+        { error: { message: 'Failed to start import process' } },
+        500,
       )
     }
   }

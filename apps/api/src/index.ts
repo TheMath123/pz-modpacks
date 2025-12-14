@@ -1,4 +1,5 @@
 import '@/env'
+import './infra/queue/modpack-import/worker'
 import { initRoutes } from './infra/http/routes'
 import { server } from './infra/http/server'
 
