@@ -16,7 +16,6 @@ export function useAddModInModpack() {
       ModpackModsService.add(modpackId, modAtribute),
     onSuccess: (_, variables) => {
       toast.success('Mod added successfully')
-      console.log(variables)
       queryClient.invalidateQueries({
         queryKey: modpackModsKeys.list(variables.modpackId, {}),
       })

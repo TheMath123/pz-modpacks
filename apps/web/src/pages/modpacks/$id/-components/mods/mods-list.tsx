@@ -15,9 +15,6 @@ export function ModsList({ modpackId, canManage }: ModsListProps) {
     useFilters<ModsFiltersSchema>()
 
   const { data, isLoading, error } = useListModpackMods(filters, modpackId)
-  console.log(error)
-  console.log('data:\n', data)
-  console.log('error:\n', error)
 
   if (error) {
     return (
