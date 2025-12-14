@@ -50,7 +50,7 @@ export function MemberAvatarButton({
           <span className="text-xs text-muted-foreground truncate">
             {member.user.email}
           </span>
-          {isAuthor ? (
+          {member.permission[0] === 'owner' ? (
             <span className="text-muted-foreground font-semibold">Author</span>
           ) : (
             <span className="text-muted-foreground font-medium">Member</span>

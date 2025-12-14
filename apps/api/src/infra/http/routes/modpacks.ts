@@ -143,16 +143,15 @@ export function modpacksRoutes(app: Server) {
     // List members
     route.get(
       '/:id/members',
-      async ({ status, params, user }) => {
-        const res = await modpackController.listMembers({ params, user })
+      async ({ status, params }) => {
+        const res = await modpackController.listMembers({ params })
         return status(res.status, res.value)
       },
       {
-        auth: true,
         params: modpackIdParamSchema,
         detail: {
           tags: ['Members of Modpacks'],
-          description: 'List all members of a modpack (owner and members only)',
+          description: 'List all members of a modpack (public or owner/member)',
           summary: 'List Modpack Members',
         },
       },

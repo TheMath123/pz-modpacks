@@ -1,7 +1,7 @@
 import { and, eq } from 'drizzle-orm'
 import { database } from '../index'
 import type { DModpackMember } from '../schemas'
-import { modpacksMembers, users } from '../schemas'
+import { modpacks, modpacksMembers, users } from '../schemas'
 
 export interface AddModpackMemberData {
   modpackId: string
@@ -49,6 +49,27 @@ export class ModpackMemberRepository {
    * Find all members of a modpack (active only) with user information
    */
   async findMembers(modpackId: string) {
+    // Get modpack owner
+    const modpack = await database.query.modpacks.findFirst({
+      where: eq(modpacks.id, modpackId),
+      columns: {
+        owner: true,
+      },
+    })
+
+    if (!modpack) return []
+
+    // Get owner user details
+    const ownerUser = await database.query.users.findFirst({
+      where: eq(users.id, modpack.owner),
+      columns: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+      },
+    })
+
     const result = await database
       .select({
         member: modpacksMembers,
@@ -68,10 +89,31 @@ export class ModpackMemberRepository {
         ),
       )
 
-    return result.map((r) => ({
+    const members = result.map((r) => ({
       ...r.member,
       user: r.user,
     }))
+
+    // Remove owner from members list if present (to avoid duplication)
+    const filteredMembers = members.filter((m) => m.userId !== modpack.owner)
+
+    if (ownerUser) {
+      // Create a fake member object for the owner
+      const ownerMember = {
+        id: crypto.randomUUID(),
+        modpackId: modpackId,
+        userId: ownerUser.id,
+        isActive: true,
+        permission: ['owner'],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        user: ownerUser,
+      }
+
+      return [ownerMember, ...filteredMembers]
+    }
+
+    return filteredMembers
   }
 
   /**
