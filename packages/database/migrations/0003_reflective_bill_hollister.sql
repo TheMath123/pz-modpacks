@@ -1,1 +1,0 @@
-ALTER TABLE "mods" ALTER COLUMN "steam_mod_id" SET DATA TYPE text[];

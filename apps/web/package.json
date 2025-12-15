@@ -23,7 +23,8 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:",
-    "@tanstack/react-form": "catalog:"
+    "@tanstack/react-form": "catalog:",
+    "date-fns": "catalog:"
   },
   "devDependencies": {
     "@org/tsconfig": "workspace:*",

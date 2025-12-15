@@ -1,9 +1,10 @@
-import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { boolean, pgTable, text, uuid } from 'drizzle-orm/pg-core'
+import { createdAt, id, updatedAt } from '../utils/schemas-types'
 import { users } from './users'
 
 export const notifications = pgTable('notifications', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  userId: text('user_id')
+  id,
+  userId: uuid('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
@@ -12,6 +13,7 @@ export const notifications = pgTable('notifications', {
     .default('info')
     .notNull(),
   isRead: boolean('is_read').default(false).notNull(),
-  metadata: text('metadata'), // JSON string para links ou dados extras
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  metadata: text('metadata'),
+  createdAt,
+  updatedAt,
 })

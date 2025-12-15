@@ -1,10 +1,10 @@
 import { desc, eq } from 'drizzle-orm'
-import { db } from '..'
+import { database } from '..'
 import { notifications } from '../schemas/notifications'
 
 export const notificationRepository = {
   create: async (data: typeof notifications.$inferInsert) => {
-    const [notification] = await db
+    const [notification] = await database
       .insert(notifications)
       .values(data)
       .returning()
@@ -12,7 +12,7 @@ export const notificationRepository = {
   },
 
   listByUserId: async (userId: string, limit = 20) => {
-    return db
+    return database
       .select()
       .from(notifications)
       .where(eq(notifications.userId, userId))
@@ -20,8 +20,8 @@ export const notificationRepository = {
       .limit(limit)
   },
 
-  markAsRead: async (id: string, userId: string) => {
-    const [notification] = await db
+  markAsRead: async (id: string, _userId: string) => {
+    const [notification] = await database
       .update(notifications)
       .set({ isRead: true })
       .where(eq(notifications.id, id)) // Adicionar verificação de userId se necessário para segurança extra
@@ -30,7 +30,7 @@ export const notificationRepository = {
   },
 
   markAllAsRead: async (userId: string) => {
-    return db
+    return database
       .update(notifications)
       .set({ isRead: true })
       .where(eq(notifications.userId, userId))
