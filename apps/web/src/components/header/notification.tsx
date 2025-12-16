@@ -17,7 +17,7 @@ const icons: Record<string, JSX.Element> = {
   default: <InfoIcon className="w-5 h-5 text-blue-500" weight="bold" />,
 }
 
-export function Notification({ data }: { data: INotificationDTO }) {
+export function notification({ data }: { data: INotificationDTO }) {
   const markAsRead = useMarkNotificationAsRead()
 
   const handleMarkAsRead = (id: string) => {
