@@ -45,12 +45,7 @@ export class SteamClient {
     const workshopUrl = `https://steamcommunity.com/sharedfiles/filedetails/?id=${workshopId}`
 
     try {
-      const response = await fetch(workshopUrl, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-        },
-      })
+      const response = await fetch(workshopUrl)
 
       if (!response.ok) {
         throw new Error(
