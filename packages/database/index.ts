@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/bun-sql'
 import { env } from './env'
 import * as schemas from './schemas'
 
-export { migrateDatabase } from './migrate'
+// export { migrateDatabase } from './migrate'
 export * from './repository'
 
 const client = new SQL(env.DATABASE_URL)
