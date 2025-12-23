@@ -38,7 +38,8 @@
       "@types/react": "19.2.7",
       "@types/react-dom": "19.2.3",
       "@tanstack/react-form": "1.27.1",
-      "date-fns": "4.1.0"
+      "date-fns": "4.1.0",
+      "bullmq": "5.66.2"
     }
   }
 }

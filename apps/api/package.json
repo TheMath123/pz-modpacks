@@ -15,7 +15,7 @@
     "@org/cache": "workspace:*",
     "@org/database": "workspace:*",
     "@org/validation": "workspace:*",
-    "bullmq": "5.66.2",
+    "bullmq": "catalog:",
     "cheerio": "1.1.2",
     "elysia": "latest"
   },
