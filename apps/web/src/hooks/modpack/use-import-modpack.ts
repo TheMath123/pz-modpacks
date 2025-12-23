@@ -14,7 +14,10 @@ export function useImportModpack() {
     mutationFn: ({ modpackId, steamUrl }: ImportModpackParams) =>
       ModpackImportService.import({ id: modpackId, data: { steamUrl } }),
     onSuccess: (data, variables) => {
-      toast.success(data.message || 'Import started in background')
+      toast.success(
+        data.message ||
+          'The modpack is being imported in the background; this may take a few minutes. You will be notified when it is finished.',
+      )
       queryClient.invalidateQueries({
         queryKey: ['import-modpack-status', variables.modpackId],
       })
