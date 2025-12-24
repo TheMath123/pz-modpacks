@@ -15,9 +15,12 @@ import {
 import {
   CaretUpDownIcon,
   DiscordLogoIcon,
+  GithubLogoIcon,
+  LifebuoyIcon,
   MoonIcon,
   SignOutIcon,
   SunIcon,
+  UserIcon,
 } from '@org/design-system/components/ui/icons'
 import { useTheme } from '@org/design-system/providers'
 import { Link } from '@tanstack/react-router'
@@ -67,9 +70,35 @@ export function NavUser() {
       </DropdownMenuTrigger>
       <DropdownMenuPositioner align="start">
         <DropdownMenuContent className="w-56">
-          <DropdownMenuItem render={<Link to="/my-profile">My Profile</Link>} />
-          <DropdownMenuItem disabled>Support</DropdownMenuItem>
-          <DropdownMenuItem disabled>Github</DropdownMenuItem>
+          <DropdownMenuItem>
+            <UserIcon
+              className="size-4.5 text-popover-foreground"
+              weight="bold"
+            />
+            <Link to="/my-profile">My Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <LifebuoyIcon
+              className="size-4.5 text-popover-foreground"
+              weight="bold"
+            />
+            <a
+              href="https://discord.gg/AzGnT9yF2a"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Support
+            </a>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <GithubLogoIcon
+              className="size-4.5 text-popover-foreground"
+              weight="bold"
+            />
+            <a href="https://github.com" target="_blank" rel="noreferrer">
+              Github
+            </a>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={toggleTheme}>
             {theme === 'light' ? (
               <MoonIcon
@@ -85,8 +114,14 @@ export function NavUser() {
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => authClient.signOut()}>
-            <SignOutIcon />
+          <DropdownMenuItem
+            onClick={() => authClient.signOut()}
+            className="focus:bg-destructive  focus:text-accent-foreground"
+          >
+            <SignOutIcon
+              className="focus:text-accent-foreground"
+              weight="bold"
+            />
             Log out
           </DropdownMenuItem>
         </DropdownMenuContent>
