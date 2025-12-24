@@ -1,7 +1,7 @@
 import { z } from '@org/validation/zod'
 import { createFileRoute } from '@tanstack/react-router'
-import { queryClient } from '@/app'
 import { modpackKeys } from '@/hooks/modpack/modpack-keys'
+import { queryClient } from '@/lib/react-query'
 import { ModpackService } from '@/services/modpack'
 import { MyModpacksPages } from './-components/my-modpacks-page'
 
