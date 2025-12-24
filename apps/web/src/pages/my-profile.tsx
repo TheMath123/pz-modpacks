@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@org/design-system/components/ui/card'
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { formatDate } from 'date-fns'
 import { authClient } from '@/lib/auth'
 import { getInitials } from '@/utils/string'
 
@@ -49,7 +50,7 @@ function MyProfilePage() {
         <CardContent className="text-center space-y-2">
           <div className="text-muted-foreground">{user.email}</div>
           <div className="text-xs text-muted-foreground">
-            {new Date(user.createdAt).toLocaleDateString()}
+            Member since {formatDate(new Date(user.createdAt), 'MMMM dd, yyyy')}
           </div>
         </CardContent>
       </Card>
