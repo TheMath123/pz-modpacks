@@ -7,6 +7,7 @@ import {
 } from '@org/design-system/components/ui/icons'
 import { toast } from '@org/design-system/components/ui/sonner.tsx'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
+import { format } from 'date-fns'
 import { ModpackVisibilityBadge } from '@/components/modpack/index.ts'
 import { ModpackVerifiedBadge } from '@/components/modpack/modpack-verified-badge.tsx'
 import { useCanManageModpack, useModpack, usePublicModpack } from '@/hooks'
@@ -103,14 +104,22 @@ export function MyModpacksPages() {
               className="h-50 w-auto rounded-md"
             />
           )}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center">
               <h1 className="text-2xl font-bold">{modpack.name}</h1>
               {modpack.isVerified && <ModpackVerifiedBadge />}
               <ModpackVisibilityBadge isPublic={modpack.isPublic} />
             </div>
 
-            <article className="flex flex-col gap-2">
+            <div className="flex flex-row gap-2 items-center text-xs text-muted-foreground">
+              <span>Created: {format(new Date(modpack.createdAt), 'PPP')}</span>
+              <span>•</span>
+              <span>
+                Last updated: {format(new Date(modpack.updatedAt), 'PPP')}
+              </span>
+            </div>
+
+            <article className="flex flex-col gap-2 py-2">
               {modpack.description?.split('\n').map((line, index) => (
                 <p
                   key={index}
