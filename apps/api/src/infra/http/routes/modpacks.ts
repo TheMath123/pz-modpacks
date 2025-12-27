@@ -299,26 +299,6 @@ export function modpacksRoutes(app: Server) {
       },
     )
 
-    // Import modpack from Steam
-    route.post(
-      '/:id/import',
-      async ({ status, params, body, user }) => {
-        const controller = makeImportModpackController()
-        const res = await controller.handle({ params, body, user })
-        return status(res.status, res.value)
-      },
-      {
-        auth: true,
-        params: modpackIdParamSchema,
-        body: importModpackSchema,
-        detail: {
-          tags: ['Modpacks'],
-          description: 'Import mods from a Steam Collection to the modpack',
-          summary: 'Import Modpack from Steam',
-        },
-      },
-    )
-
     // List mods
     route.get(
       '/:id/mods',
@@ -353,6 +333,26 @@ export function modpacksRoutes(app: Server) {
           tags: ['Mods'],
           description: 'Remove a mod from the modpack (owner/member only)',
           summary: 'Remove Mod',
+        },
+      },
+    )
+
+    // Import modpack from Steam
+    route.post(
+      '/:id/import',
+      async ({ status, params, body, user }) => {
+        const controller = makeImportModpackController()
+        const res = await controller.handle({ params, body, user })
+        return status(res.status, res.value)
+      },
+      {
+        auth: true,
+        params: modpackIdParamSchema,
+        body: importModpackSchema,
+        detail: {
+          tags: ['Modpacks'],
+          description: 'Import mods from a Steam Collection to the modpack',
+          summary: 'Import Modpack from Steam',
         },
       },
     )

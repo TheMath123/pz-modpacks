@@ -7,7 +7,7 @@ interface ListModsControllerParams {
     page?: string
     limit?: string
     search?: string
-    sortBy?: 'createdAt' | 'updatedAt'
+    sortBy?: 'createdAt' | 'updatedAt' | 'name'
     sortOrder?: 'asc' | 'desc'
     tags?: string
   }
