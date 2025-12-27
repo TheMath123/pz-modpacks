@@ -10,11 +10,6 @@ export function makeRequestQuery(
   if (value) {
     for (const [key, val] of Object.entries(value)) {
       if (val !== undefined) {
-        // If the value contains a comma, we should encode it properly
-        // But URLSearchParams handles encoding automatically.
-        // The issue might be that some backends treat comma as multiple values
-        // if not encoded, or vice versa.
-        // However, we want to send it as a single string.
         searchParams.append(key, String(val))
       }
     }
