@@ -36,15 +36,16 @@ export function ArchiveModpackDialog({ modpack }: ArchiveModpackDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger
-        render={(props) => (
+        className="aspect-square w-fit"
+        render={() => (
           <Button
             variant="default"
+            size="icon"
             aria-label="Archive Modpack"
             title="Archive Modpack"
-            className="aspect-square bg-destructive hover:bg-red-800 p-0 items-center justify-center"
-            {...props}
+            className="bg-destructive hover:bg-red-800"
           >
-            <TrashIcon className="w-4 h-4" weight="bold" />
+            <TrashIcon className="w-5 h-5" weight="bold" />
           </Button>
         )}
       />

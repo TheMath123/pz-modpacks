@@ -23,13 +23,14 @@ export function ExportModpackDialog({ modpack }: AddMemberDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
+        className={'w-fit'}
         render={
           <Button
             variant="outline"
             size="icon"
             aria-label="Download server file"
           >
-            <BoxArrowDownIcon className="h-4 w-4" weight="bold" />
+            <BoxArrowDownIcon className="h-5 w-5" weight="bold" />
           </Button>
         }
       />

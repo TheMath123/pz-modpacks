@@ -1,6 +1,11 @@
 import { Button } from '@org/design-system/components/ui/button'
 import { ButtonGroup } from '@org/design-system/components/ui/button-group.tsx'
-import { SteamLogoIcon } from '@org/design-system/components/ui/icons'
+import {
+  CopyIcon,
+  ShareNetworkIcon,
+  SteamLogoIcon,
+} from '@org/design-system/components/ui/icons'
+import { toast } from '@org/design-system/components/ui/sonner.tsx'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { ModpackVisibilityBadge } from '@/components/modpack/index.ts'
 import { ModpackVerifiedBadge } from '@/components/modpack/modpack-verified-badge.tsx'
@@ -19,6 +24,32 @@ export function MyModpacksPages() {
   const useList = data ? useModpack : usePublicModpack
   const { data: modpack, isLoading, error } = useList(id)
   const canManage = useCanManageModpack(modpack?.owner || '')
+
+  const handleShare = async () => {
+    const shareData = {
+      title: modpack?.name ?? 'PZ Packs',
+      text: 'Check out this modpack I found on PZ Packs!',
+      url: window.location.href.split('?')[0],
+    }
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData)
+        console.log('Content shared successfully!')
+      } else {
+        console.log('Web Share API not supported in this browser.')
+        navigator.clipboard.writeText(shareData.url)
+        toast.custom(() => (
+          <>
+            <CopyIcon className="inline-block w-5 h-5 mr-2" weight="bold" />
+            Link copied to clipboard!
+          </>
+        ))
+      }
+    } catch (_err) {
+      // Handle errors silently
+    }
+  }
 
   if (isLoading) {
     return (
@@ -62,7 +93,7 @@ export function MyModpacksPages() {
 
   return (
     <div className="container mx-auto py-8 flex flex-col gap-6 relative">
-      <div className="flex flex-row gap-4 items-end justify-between mb-6 flex-wrap">
+      <div className="flex flex-row items-start justify-between gap-4 flex-wrap">
         <div className="flex flex-row gap-4 items-start justify-center flex-wrap ">
           {modpack.avatarUrl && (
             <img
@@ -72,38 +103,42 @@ export function MyModpacksPages() {
               className="h-50 w-auto rounded-md"
             />
           )}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6">
             <div className="flex flex-row gap-2 items-center">
               <h1 className="text-2xl font-bold">{modpack.name}</h1>
               {modpack.isVerified && <ModpackVerifiedBadge />}
               <ModpackVisibilityBadge isPublic={modpack.isPublic} />
             </div>
-            {modpack.description?.split('\n').map((line, index) => (
-              <p
-                key={index}
-                className="text-muted-foreground text-sm max-w-2xl"
-              >
-                {line}
-              </p>
-            ))}
+
+            <article className="flex flex-col gap-2">
+              {modpack.description?.split('\n').map((line, index) => (
+                <p
+                  key={index}
+                  className="text-muted-foreground text-sm max-w-2xl"
+                >
+                  {line}
+                </p>
+              ))}
+            </article>
 
             <Members modpackId={modpack.id} canManageMembers={canManage} />
           </div>
         </div>
-        <ButtonGroup className="h-11">
+        <ButtonGroup>
           <ButtonGroup>
             {modpack.steamUrl && (
               <Button
                 variant="outline"
                 size="icon"
-                className="w-fit bg-[#1b2838] "
                 aria-label="Visit modpack in steam workshop"
+                title="Visit modpack in steam workshop"
+                className="bg-[#1b2838]"
                 render={
                   <Link
                     to={modpack.steamUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-primary hover:underline"
+                    className="text-sm text-primary hover:underline "
                   >
                     <SteamLogoIcon
                       className="w-6 h-6 text-white"
@@ -111,26 +146,30 @@ export function MyModpacksPages() {
                     />
                   </Link>
                 }
-              />
+              ></Button>
             )}
           </ButtonGroup>
-          {canManage && (
-            <ButtonGroup>
-              <ButtonGroup>
-                <ExportModpackDialog modpack={modpack} />
-              </ButtonGroup>
-              <ButtonGroup>
-                <UpdateModpackDialog modpack={modpack} />
-              </ButtonGroup>
-              <ButtonGroup>
-                <ArchiveModpackDialog modpack={modpack} />
-              </ButtonGroup>
-            </ButtonGroup>
-          )}
+          <ButtonGroup>
+            <Button
+              variant="outline"
+              size="icon"
+              aria-label="Share modpack"
+              title="Share modpack"
+              className="bg-blue-500"
+              onClick={handleShare}
+            >
+              <ShareNetworkIcon className="w-5 h-5 text-white" weight="bold" />
+            </Button>
+          </ButtonGroup>
         </ButtonGroup>
       </div>
-      <div>
-        <ModsList modpackId={modpack.id} canManage={canManage} />
+      <div className="relative">
+        <div className="flex flex-row gap-2 absolute -top-16 right-0">
+          <ExportModpackDialog modpack={modpack} />
+          <UpdateModpackDialog modpack={modpack} />
+          <ArchiveModpackDialog modpack={modpack} />
+        </div>
+        <ModsList modpack={modpack} canManage={canManage} />
       </div>
     </div>
   )

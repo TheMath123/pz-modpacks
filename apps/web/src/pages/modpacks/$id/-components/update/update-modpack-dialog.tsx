@@ -22,13 +22,10 @@ export function UpdateModpackDialog({ modpack }: UpdateModpackDialogProps) {
   return (
     <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
       <DialogTrigger
+        className="aspect-square w-fit"
         render={
-          <Button
-            aria-label="Edit Modpack"
-            title="Edit Modpack"
-            className="p-0 items-center justify-center aspect-square"
-          >
-            <PencilIcon className="h-4 w-4" weight="bold" />
+          <Button aria-label="Edit Modpack" title="Edit Modpack" size="icon">
+            <PencilIcon className="h-5 w-5" weight="bold" />
           </Button>
         }
       />

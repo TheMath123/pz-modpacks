@@ -1,5 +1,3 @@
-import { Badge } from '@org/design-system/components/ui/badge'
-import { CopyButton } from '@org/design-system/components/ui/button-copy'
 import {
   Popover,
   PopoverContent,

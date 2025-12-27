@@ -3,22 +3,23 @@ import { PaginationControls } from '@/components/pagination'
 import { useListModpackMods } from '@/hooks/modpack/mod/use-list-modpack-mods'
 import { useImportModpackStatus } from '@/hooks/modpack/use-import-modpack-status'
 import { useFilters } from '@/hooks/use-filters'
+import type { IModpackDTO } from '@/services/modpack/dtos'
 import type { ModsFiltersSchema } from '../../index'
 import { AddModDialog } from '../add-mod/add-mod-dialog'
 import { ImportModpackDialog } from '../import-modpack/import-modpack-dialog'
 import { ModCard } from './mod-card'
 
 interface ModsListProps {
-  modpackId: string
+  modpack: IModpackDTO
   canManage: boolean
 }
 
-export function ModsList({ modpackId, canManage }: ModsListProps) {
+export function ModsList({ modpack, canManage }: ModsListProps) {
   const { filters, handleSearchChange, handleSortChange, handlePageChange } =
     useFilters<ModsFiltersSchema>()
 
-  const { data, isLoading, error } = useListModpackMods(filters, modpackId)
-  const { data: importStatus } = useImportModpackStatus(modpackId)
+  const { data, isLoading, error } = useListModpackMods(filters, modpack.id)
+  const { data: importStatus } = useImportModpackStatus(modpack.id)
 
   const isImporting =
     importStatus?.status === 'active' ||
@@ -40,21 +41,23 @@ export function ModsList({ modpackId, canManage }: ModsListProps) {
             ? `Mods (${data?.pagination.total ?? 0})`
             : 'Mods'}
         </h2>
-        {canManage && (
-          <div className="flex gap-2 items-center">
-            {isImporting ? (
-              <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md text-sm text-muted-foreground border border-border">
-                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                Importing mods from Steam...
-              </div>
-            ) : (
-              <>
-                <ImportModpackDialog modpackId={modpackId} />
-                <AddModDialog modpackId={modpackId} />
-              </>
-            )}
-          </div>
-        )}
+        <div className="flex flex-col gap-4 items-end">
+          {canManage && (
+            <div className="flex gap-2 items-center">
+              {isImporting ? (
+                <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md text-sm text-muted-foreground border border-border">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                  Importing mods from Steam...
+                </div>
+              ) : (
+                <>
+                  <ImportModpackDialog modpackId={modpack.id} />
+                  <AddModDialog modpackId={modpack.id} />
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <ModpackFilters
@@ -78,7 +81,7 @@ export function ModsList({ modpackId, canManage }: ModsListProps) {
               key={item.id}
               data={item}
               canManage={canManage}
-              modpackId={modpackId}
+              modpackId={modpack.id}
             />
           ))}
           {data?.data.length === 0 && (
