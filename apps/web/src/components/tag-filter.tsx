@@ -1,11 +1,10 @@
-import { Badge } from '@org/design-system/components/ui/badge'
 import { cn } from '@org/design-system/lib/utils'
 import { formatHex, oklch, wcagContrast } from 'culori'
 import { useTags } from '@/hooks/mod/use-tags'
+import { type PaginationFilters, useFilters } from '@/hooks/use-filters'
 
-interface TagFilterProps {
-  selectedTags: string[]
-  onChange: (tags: string[]) => void
+interface FilterWithTags extends PaginationFilters {
+  tags?: string
 }
 
 const stringToColor = (str: string) => {
@@ -28,15 +27,24 @@ const getContrastColor = (bgColorHex: string) => {
   return contrastBlack > contrastWhite ? black : white
 }
 
-export function TagFilter({ selectedTags, onChange }: TagFilterProps) {
+export function TagFilter() {
   const { data: tags } = useTags()
+  const { filters, setFilters } = useFilters<FilterWithTags>()
+
+  const selectedTags = filters.tags ? filters.tags.split(',') : []
 
   const toggleTag = (tagId: string) => {
+    let newTags: string[]
     if (selectedTags.includes(tagId)) {
-      onChange(selectedTags.filter((t) => t !== tagId))
+      newTags = selectedTags.filter((t) => t !== tagId)
     } else {
-      onChange([...selectedTags, tagId])
+      newTags = [...selectedTags, tagId]
     }
+
+    setFilters({
+      tags: newTags.length > 0 ? newTags.join(',') : undefined,
+      page: 1,
+    })
   }
 
   if (!tags) return null
