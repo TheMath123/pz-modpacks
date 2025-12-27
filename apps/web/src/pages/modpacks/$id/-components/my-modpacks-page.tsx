@@ -164,11 +164,13 @@ export function MyModpacksPages() {
         </ButtonGroup>
       </div>
       <div className="relative">
-        <div className="flex flex-row gap-2 absolute -top-16 right-0">
-          <ExportModpackDialog modpack={modpack} />
-          <UpdateModpackDialog modpack={modpack} />
-          <ArchiveModpackDialog modpack={modpack} />
-        </div>
+        {canManage && (
+          <div className="flex flex-row gap-2 absolute -top-16 right-0">
+            <ExportModpackDialog modpack={modpack} />
+            <UpdateModpackDialog modpack={modpack} />
+            <ArchiveModpackDialog modpack={modpack} />
+          </div>
+        )}
         <ModsList modpack={modpack} canManage={canManage} />
       </div>
     </div>
