@@ -92,7 +92,7 @@ export function MyModpacksPages() {
   }
 
   return (
-    <div className="container mx-auto py-8 flex flex-col gap-6 relative">
+    <div className="container mx-auto py-8 flex flex-col gap-6 relative mb-10">
       <div className="flex flex-row items-start justify-between gap-4 flex-wrap">
         <div className="flex flex-row gap-4 items-start justify-center flex-wrap ">
           {modpack.avatarUrl && (
