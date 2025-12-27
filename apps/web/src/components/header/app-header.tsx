@@ -41,6 +41,12 @@ export function AppHeader() {
               My Modpacks
             </Anchor>
           ) : null}
+          <Anchor
+            href="/mods"
+            className={cn(pathname === '/mods' && 'underline ')}
+          >
+            Mods
+          </Anchor>
         </div>
         <div className="flex items-center gap-2">
           {session && <NotificationPopover />}

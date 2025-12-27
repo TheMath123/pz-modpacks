@@ -5,7 +5,7 @@ import type { IModDTO } from '@/services/mod/dtos'
 import { usePaginated } from '../globals'
 import { modKeys } from './mod-keys'
 
-export function useListMyModpacks(
+export function useListAllMods(
   queryParams: PaginateQueryParams = {},
   options?: Omit<
     UseQueryOptions<PaginatedResponse<IModDTO>>,
@@ -15,7 +15,7 @@ export function useListMyModpacks(
   return usePaginated<IModDTO>({
     queryParams,
     queryKey: modKeys.list(queryParams),
-    queryFn: ModService.list,
+    queryFn: async () => await ModService.list(queryParams),
     options,
   })
 }

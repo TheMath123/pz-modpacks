@@ -11,13 +11,13 @@ import { RemoveModDialog } from './remove-mod-dialog'
 interface ModCardProps {
   data: IModDTO
   canManage: boolean
-  modpackId: string
+  modpackId?: string
 }
 
 export function ModCard({ data, modpackId, canManage }: ModCardProps) {
   const { theme } = useTheme()
 
-  if (!data || !modpackId) return null
+  if (!data) return null
 
   return (
     <Card className="flex flex-row items-start p-0 overflow-hidden gap-0">
@@ -52,7 +52,7 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
                 {data.name}
               </CardTitle>
             </Link>
-            {canManage && (
+            {canManage && modpackId && (
               <RemoveModDialog
                 modpackId={modpackId}
                 modId={data.id}
