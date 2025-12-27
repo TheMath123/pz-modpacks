@@ -14,6 +14,7 @@ const modsSearchSchema = z.object({
     .catch('createdAt')
     .default('updatedAt'),
   sortOrder: z.enum(['asc', 'desc']).catch('asc').default('desc'),
+  tags: z.string().optional().catch(undefined),
 })
 
 export type ModsFiltersSchema = z.infer<typeof modsSearchSchema>

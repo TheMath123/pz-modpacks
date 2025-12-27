@@ -20,6 +20,10 @@ export class TagRepository {
     }
     return this.create(name)
   }
+
+  async findAll() {
+    return database.select().from(tags)
+  }
 }
 
 export const tagRepository = new TagRepository()

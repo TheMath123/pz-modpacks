@@ -1,6 +1,7 @@
 import {
   and,
   arrayContains,
+  arrayOverlaps,
   asc,
   desc,
   eq,
@@ -31,8 +32,9 @@ export interface ListModsParams {
   limit?: number
   search?: string
   modpackId?: string
-  sortBy?: 'createdAt' | 'updatedAt'
+  sortBy?: 'createdAt' | 'updatedAt' | 'name'
   sortOrder?: 'asc' | 'desc'
+  tags?: string[]
 }
 
 export interface TagSummary {
@@ -122,10 +124,15 @@ export class ModRepository {
       search,
       sortBy = 'createdAt',
       sortOrder = 'desc',
+      tags,
     } = params
     const offset = (page - 1) * limit
 
     const conditions = [eq(mods.isActive, true)]
+
+    if (tags && tags.length > 0) {
+      conditions.push(arrayOverlaps(mods.tags, tags))
+    }
 
     if (search) {
       const searchCondition = or(
@@ -145,6 +152,8 @@ export class ModRepository {
     } else if (sortBy === 'updatedAt') {
       orderByClause =
         sortOrder === 'asc' ? asc(mods.updatedAt) : desc(mods.updatedAt)
+    } else if (sortBy === 'name') {
+      orderByClause = sortOrder === 'asc' ? asc(mods.name) : desc(mods.name)
     }
 
     const [{ count: total }] = await database
@@ -181,6 +190,7 @@ export class ModRepository {
       modpackId,
       sortBy = 'createdAt',
       sortOrder = 'desc',
+      tags,
     } = params
     const offset = (page - 1) * limit
 
@@ -188,6 +198,10 @@ export class ModRepository {
       eq(mods.isActive, true),
       eq(modpacksMods.isActive, true),
     ]
+
+    if (tags && tags.length > 0) {
+      conditions.push(arrayOverlaps(mods.tags, tags))
+    }
 
     if (modpackId) {
       conditions.push(eq(modpacksMods.modpackId, modpackId))
@@ -215,6 +229,8 @@ export class ModRepository {
         sortOrder === 'asc'
           ? asc(modpacksMods.updatedAt)
           : desc(modpacksMods.updatedAt)
+    } else if (sortBy === 'name') {
+      orderByClause = sortOrder === 'asc' ? asc(mods.name) : desc(mods.name)
     }
 
     const [{ count: total }] = await database

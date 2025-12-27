@@ -16,18 +16,20 @@
     "@tailwindcss/vite": "4.1.18",
     "@tanstack/devtools-vite": "0.4.0",
     "@tanstack/react-devtools": "0.9.0",
+    "@tanstack/react-form": "catalog:",
     "@tanstack/react-query": "5.90.12",
     "@tanstack/react-router": "1.143.11",
     "@tanstack/react-router-devtools": "1.143.11",
     "@tanstack/router-plugin": "1.143.11",
+    "culori": "4.0.2",
+    "date-fns": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "tailwindcss": "catalog:",
-    "@tanstack/react-form": "catalog:",
-    "date-fns": "catalog:"
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
     "@org/tsconfig": "workspace:*",
+    "@types/culori": "4.0.1",
     "@types/node": "24.10.0",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

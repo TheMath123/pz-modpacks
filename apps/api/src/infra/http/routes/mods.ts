@@ -1,6 +1,7 @@
 import { makeGetModByWorkshopIdController } from '@/domain/mod/factories/make-get-mod-by-workshop-id-controller'
 import { makeGetModController } from '@/domain/mod/factories/make-get-mod-controller'
 import { makeListModsController } from '@/domain/mod/factories/make-list-mods-controller'
+import { makeListTagsController } from '@/domain/mod/factories/make-list-tags-controller'
 import { listModsQuerySchema } from '@/domain/mod/validation/list-mods.schema'
 import {
   modIdParamSchema,
@@ -10,6 +11,23 @@ import type { Server } from '../server'
 
 export function modsRoutes(app: Server) {
   app.group('/mods', (route) => {
+    // List all tags (no auth required)
+    route.get(
+      '/tags',
+      async ({ status }) => {
+        const controller = makeListTagsController()
+        const res = await controller.handle()
+        return status(res.status, res.value)
+      },
+      {
+        detail: {
+          tags: ['Mods'],
+          description: 'List all available tags',
+          summary: 'List Tags',
+        },
+      },
+    )
+
     // List all mods (no auth required)
     route.get(
       '/',

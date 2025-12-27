@@ -1,5 +1,6 @@
 import { ModpackFilters } from '@/components/modpack/filters/modpack-filters'
 import { PaginationControls } from '@/components/pagination'
+import { TagFilter } from '@/components/tag-filter'
 import { useListModpackMods } from '@/hooks/modpack/mod/use-list-modpack-mods'
 import { useImportModpackStatus } from '@/hooks/modpack/use-import-modpack-status'
 import { useFilters } from '@/hooks/use-filters'
@@ -15,8 +16,13 @@ interface ModsListProps {
 }
 
 export function ModsList({ modpack, canManage }: ModsListProps) {
-  const { filters, handleSearchChange, handleSortChange, handlePageChange } =
-    useFilters<ModsFiltersSchema>()
+  const {
+    filters,
+    setFilters,
+    handleSearchChange,
+    handleSortChange,
+    handlePageChange,
+  } = useFilters<ModsFiltersSchema>()
 
   const { data, isLoading, error } = useListModpackMods(filters, modpack.id)
   const { data: importStatus } = useImportModpackStatus(modpack.id)
@@ -25,6 +31,14 @@ export function ModsList({ modpack, canManage }: ModsListProps) {
     importStatus?.status === 'active' ||
     importStatus?.status === 'waiting' ||
     importStatus?.status === 'delayed'
+
+  const selectedTags = filters.tags ? filters.tags.split(',') : []
+  const handleTagsChange = (newTags: string[]) => {
+    setFilters({
+      tags: newTags.length > 0 ? newTags.join(',') : undefined,
+      page: 1,
+    } as any)
+  }
 
   if (error) {
     return (
@@ -67,6 +81,8 @@ export function ModsList({ modpack, canManage }: ModsListProps) {
         sortBy={filters.sortBy}
         sortOrder={filters.sortOrder}
       />
+
+      <TagFilter selectedTags={selectedTags} onChange={handleTagsChange} />
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

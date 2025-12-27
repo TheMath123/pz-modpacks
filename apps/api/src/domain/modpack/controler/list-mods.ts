@@ -9,11 +9,12 @@ interface ListModsControllerParams {
     search?: string
     sortBy?: 'createdAt' | 'updatedAt'
     sortOrder?: 'asc' | 'desc'
+    tags?: string
   }
 }
 
 export async function listModsController({ query }: ListModsControllerParams) {
-  const { modpackId, page, limit, search, sortBy, sortOrder } = query
+  const { modpackId, page, limit, search, sortBy, sortOrder, tags } = query
 
   if (!modpackId) {
     return new ApiResponse(
@@ -22,6 +23,8 @@ export async function listModsController({ query }: ListModsControllerParams) {
     )
   }
 
+  const tagsArray = tags ? tags.split(',').filter(Boolean) : undefined
+
   const result = await modRepository.list({
     modpackId,
     page: page ? parseInt(page, 10) : 1,
@@ -29,6 +32,7 @@ export async function listModsController({ query }: ListModsControllerParams) {
     search,
     sortBy,
     sortOrder,
+    tags: tagsArray,
   })
 
   return new ApiResponse(result, 200)
