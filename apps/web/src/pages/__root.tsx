@@ -6,6 +6,7 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import * as React from 'react'
+import { AppFooter } from '@/components/footer'
 import { AppHeader } from '@/components/header'
 import { ReactQueryProvider } from '@/lib/react-query'
 import { NotFoundPage } from './-components/not-found-page'
@@ -53,6 +54,7 @@ function RootComponent() {
         <Toaster position="bottom-center" />
         <AppHeader />
         <Outlet />
+        <AppFooter />
       </ReactQueryProvider>
       <Scripts />
     </React.Fragment>
