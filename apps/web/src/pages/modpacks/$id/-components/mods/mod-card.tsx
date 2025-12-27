@@ -42,24 +42,25 @@ export function ModCard({ data, modpackId, canManage }: ModCardProps) {
       </div>
       <div className="flex flex-col items-start justify-between gap-2 p-2 h-full w-full">
         <div className="flex flex-col gap-2 items-start relative w-full">
-          <Link
-            to={data.steamUrl || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CardTitle className="hover:underline cursor-pointer break-all max-w-50">
-              {data.name}
-            </CardTitle>
-          </Link>
-          {canManage && (
-            <RemoveModDialog
-              className="absolute right-0 top-0"
-              modpackId={modpackId}
-              modId={data.id}
-              modName={data.name}
-            />
-          )}
-          <h2 className="text-muted-foreground font-light text-xs flex flex-row items-center gap-1">
+          <div className="flex flex-row gap-1 items-center justify-between w-full">
+            <Link
+              to={data.steamUrl || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <CardTitle className="hover:underline cursor-pointer break-all max-w-50">
+                {data.name}
+              </CardTitle>
+            </Link>
+            {canManage && (
+              <RemoveModDialog
+                modpackId={modpackId}
+                modId={data.id}
+                modName={data.name}
+              />
+            )}
+          </div>
+          <h2 className="hidden md:flex text-muted-foreground font-light text-xs flex-row items-center gap-1">
             Workshop ID:
             <strong className="font-medium select-all">
               {data.workshopId}
