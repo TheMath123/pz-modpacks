@@ -3,7 +3,7 @@ import { SortByFilter } from './sort-by-filter'
 import { SortOrderFilter } from './sort-order-filter'
 
 interface ModpackFiltersProps {
-  onSearchChange: (search: string) => void
+  onSearchChange: (search: string | undefined) => void
   onSortChange: (sortBy: string, sortOrder: string) => void
   search?: string
   sortBy?: string

@@ -2,7 +2,7 @@ import { Input } from '@org/design-system/components/ui/input'
 import { useEffect, useState } from 'react'
 
 interface SearchFilterProps {
-  onSearchChange: (search: string) => void
+  onSearchChange: (search: string | undefined) => void
   value?: string
   debounceTime?: number
 }
@@ -21,7 +21,7 @@ export function SearchFilter({
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search !== value) {
-        onSearchChange(search)
+        onSearchChange(search || undefined)
       }
     }, debounceTime)
 

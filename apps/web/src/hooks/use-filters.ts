@@ -29,7 +29,7 @@ export function useFilters<T extends PaginationFilters>() {
   )
 
   const handleSearchChange = useCallback(
-    (search: string) => {
+    (search: string | undefined) => {
       setFilters({ search, page: 1 } as Partial<T>)
     },
     [setFilters],
