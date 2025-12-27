@@ -1,3 +1,4 @@
+import { CheckIcon, X, XIcon } from '@org/design-system/components/ui/icons'
 import { cn } from '@org/design-system/lib/utils'
 import { formatHex, oklch, wcagContrast } from 'culori'
 import { useTags } from '@/hooks/mod/use-tags'
@@ -47,6 +48,13 @@ export function TagFilter() {
     })
   }
 
+  const clearTags = () => {
+    setFilters({
+      tags: undefined,
+      page: 1,
+    })
+  }
+
   if (!tags) return null
 
   return (
@@ -61,10 +69,13 @@ export function TagFilter() {
             type="button"
             key={tag.id}
             className={cn(
+              'inline-flex items-center gap-1',
               'cursor-pointer transition-all hover:opacity-90 hover:shadow-md',
               'px-2 py-1 rounded-md text-sm font-medium shadow-sm opacity-75',
-              isSelected ? 'ring-2 opacity-100 shadow-md' : '',
+              isSelected ? 'ring-2 ring-border opacity-100 shadow-md' : '',
             )}
+            aria-label={`Toggle tag ${tag.name}`}
+            title={`Toggle tag ${tag.name}`}
             onClick={() => toggleTag(tag.id)}
             style={{
               backgroundColor: color,
@@ -72,10 +83,27 @@ export function TagFilter() {
               borderColor: color,
             }}
           >
+            {isSelected && <CheckIcon className="w-4 h-4" weight="bold" />}
             {tag.name}
           </button>
         )
       })}
+      {selectedTags.length > 0 && (
+        <button
+          type="button"
+          className={cn(
+            'cursor-pointer transition-all hover:shadow-md border-2 border-border',
+            'px-2 py-1 rounded-md text-sm font-medium shadow-sm',
+            'bg-background text-foreground flex items-center gap-1',
+          )}
+          onClick={clearTags}
+          aria-label="Clear all tags"
+          title="Clear all tags"
+        >
+          <XIcon className="w-4 h-4" weight="bold" />
+          Clear
+        </button>
+      )}
     </div>
   )
 }
