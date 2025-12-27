@@ -8,7 +8,7 @@ interface ListModsControllerParams {
     search?: string
     sortBy?: 'createdAt' | 'updatedAt' | 'name'
     sortOrder?: 'asc' | 'desc'
-    tags?: string
+    tags?: string | string[]
   }
 }
 
@@ -20,7 +20,13 @@ export class ListModsController {
     const limit = query.limit ? parseInt(query.limit, 10) : 10
     const { search, sortBy, sortOrder, tags } = query
 
-    const tagsArray = tags ? tags.split(',').filter(Boolean) : undefined
+    let tagsArray: string[] | undefined
+
+    if (Array.isArray(tags)) {
+      tagsArray = tags
+    } else if (typeof tags === 'string') {
+      tagsArray = tags.split(',').filter(Boolean)
+    }
 
     const result = await this.listModsUseCase.execute({
       page,

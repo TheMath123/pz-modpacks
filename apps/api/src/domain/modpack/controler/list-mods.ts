@@ -9,7 +9,7 @@ interface ListModsControllerParams {
     search?: string
     sortBy?: 'createdAt' | 'updatedAt' | 'name'
     sortOrder?: 'asc' | 'desc'
-    tags?: string
+    tags?: string | string[]
   }
 }
 
@@ -23,7 +23,13 @@ export async function listModsController({ query }: ListModsControllerParams) {
     )
   }
 
-  const tagsArray = tags ? tags.split(',').filter(Boolean) : undefined
+  let tagsArray: string[] | undefined
+
+  if (Array.isArray(tags)) {
+    tagsArray = tags
+  } else if (typeof tags === 'string') {
+    tagsArray = tags.split(',').filter(Boolean)
+  }
 
   const result = await modRepository.list({
     modpackId,

@@ -6,7 +6,7 @@ export const listModsQuerySchema = z.object({
   search: z.string().optional(),
   sortBy: z.enum(['createdAt', 'updatedAt', 'name']).optional(),
   sortOrder: z.enum(['asc', 'desc']).optional(),
-  tags: z.string().optional(),
+  tags: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
 export type ListModsQuerySchema = z.infer<typeof listModsQuerySchema>
